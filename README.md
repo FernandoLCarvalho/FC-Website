@@ -88,11 +88,7 @@ FC-Website is fully Dockerized, enabling easy setup and consistent environment m
     ```bash
     cd FC-Website
     ```
-3. **Install the dependencies**:
-     ```bash
-    npm install
-    ```
-4. **Run the Dockerized environment**:
+3. **Run the Dockerized environment (this will automatically install dependencies inside the container)**:
      ```bash
     docker-compose up --build
     ```
