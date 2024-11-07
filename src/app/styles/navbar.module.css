@@ -1,0 +1,28 @@
+.navbar {
+    position: fixed;
+    width: 100%;
+    z-index: 50;
+    transition: background-color 0.3s ease;
+  }
+  
+  .scrolled {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .transparent {
+    background-color: transparent;
+  }
+  
+  .menuToggle {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+  }
+  
