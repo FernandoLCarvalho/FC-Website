@@ -38,6 +38,7 @@ FC-Website is a Next.js-based personal site built to present my web development 
 ## Folder Structure
 
 This structure highlights the main folders related to functionality and i18n support.
+```bash
 .
 ├── messages                   # Contains translation files for each language
 │   ├── en.json                # English translations
@@ -60,7 +61,7 @@ This structure highlights the main folders related to functionality and i18n sup
 ├── public                     # Contains images for the project
 │
 └── README.md                  # Project documentation
-
+```
 
 ## Internationalization
 
@@ -80,21 +81,21 @@ FC-Website is fully Dockerized, enabling easy setup and consistent environment m
 
 ### Installation
 1. **Clone the repository**:
-
+    ```bash
    git clone https://github.com/FernandoLCarvalho/FC-Website.git
-
+    ```
 2. **Navigate into the project directory**:
-
+    ```bash
     cd FC-Website
-
+    ```
 3. **Install the dependencies**:
-
+     ```bash
     npm install
-
+    ```
 4. **Run the Dockerized environment**:
-
+     ```bash
     docker-compose up --build
-
+    ```
 ##  Accessing the Application
 
     After running the Docker setup, you can access the application by visiting http://localhost:3001 in your web browser.
