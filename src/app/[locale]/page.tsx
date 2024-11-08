@@ -1,8 +1,8 @@
-export default function Homepage()
-{
-  return(
-    <div style={{}}>
-     
-    </div>
-  )
+import MainSection from "./components/mainSection";
+
+
+export default function Homepage() {
+  return (
+    <MainSection />
+  );
 }

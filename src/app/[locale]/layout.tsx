@@ -40,9 +40,11 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <NavBar />
-          <main
-          // className="relative overflow-hidden"
+          <div className='absolute w-full' style={{zIndex: '1'}}>
+            <NavBar />
+          </div>
+          <main style={{zIndex: '0'}}
+            className="relative"
           >{children}</main>
 
         </NextIntlClientProvider>

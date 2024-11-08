@@ -20,15 +20,15 @@ export default function NavBar() {
   ];
 
   return (
-    <header className="grid grid-cols-3 sm:grid-cols-3 md:grid-col-2 items-center px-16 bg-white shadow-md w-full h-18 mx-auto ">
+    <header className="grid grid-cols-3 sm:grid-cols-3 md:grid-col-2 items-center px-16 bg-transparent shadow-md w-full h-18 mx-auto">
       {/* Logo */}
       <div className="flex items-center justify-start">
-        <Image src="/Logo.svg" alt="Logo" width={100} height={100}/>
+        <Image src="/Logo.svg" alt="Logo" width={50} height={50} style={{ minWidth: '15%'}} loading="lazy"/>
       </div>
 
       {/* Large screen navigation menu */}
       <nav className="hidden sm:flex justify-center">
-        <ul className="flex space-x-16 text-black whitespace-nowrap">
+        <ul className="flex space-x-16 text-black whitespace-nowrap text-white">
           {menuItems.map((item, index) => (
             <li key={index}>
               <Link href={item.url} className="hover:text-blue-500">
@@ -42,7 +42,7 @@ export default function NavBar() {
       <div className="flex justify-center sm:hidden items-center">
         <button
           onClick={toggleMenu}
-          className="text-gray-700 focus:outline-none h-9 w-9 sm:h-8 md:h-7 lg:h-10"
+          className="text-white focus:outline-none h-9 w-9 sm:h-8 md:h-7 lg:h-10"
         >
           <svg
             className="w-full"
@@ -59,7 +59,7 @@ export default function NavBar() {
       </div>
 
       {isOpen && (
-        <div className="fixed top-0 left-0 w-2/4 h-full bg-gray-900 bg-opacity-95 z-50 flex flex-col items-start p-8">
+        <div className="fixed top-0 left-0 w-0.33 h-full bg-gray-900 bg-opacity-95 z-50 flex flex-col items-start p-8">
           <button
             onClick={toggleMenu}
             className="self-end mb-8 text-white text-2xl focus:outline-none"
