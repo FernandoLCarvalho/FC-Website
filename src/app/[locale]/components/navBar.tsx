@@ -3,27 +3,39 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import styles from "../../styles/navbar.module.css"
+
+interface MenuItems {
+  label: string;
+  url?: string;
+}
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isFAQOpen, setIsFAQOpen] = useState(false);
   const t = useTranslations();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const menuItems = [
+  const openFAQ = () => {
+    setIsFAQOpen(!isFAQOpen);
+  };
+
+  const menuItems: MenuItems[] = [
     { label: t("HOME"), url: "/" },
     { label: t("ABOUT"), url: "/about" },
     { label: t("CONTACT"), url: "/contact" },
+    { label: "FAQ" },
   ];
 
   return (
     <header className="grid grid-cols-3 sm:grid-cols-3 md:grid-col-2 items-center px-16 bg-transparent shadow-md w-full h-18 mx-auto">
       {/* Logo */}
       <div className="flex items-center justify-start">
-        <Image src="/Logo.svg" alt="Logo" width={50} height={50} style={{ minWidth: '15%'}} loading="lazy"/>
+        <Image src="/Logo.svg" alt="Logo" width={50} height={50} style={{ minWidth: "15%" }} loading="lazy" />
       </div>
 
       {/* Large screen navigation menu */}
@@ -31,9 +43,15 @@ export default function NavBar() {
         <ul className="flex space-x-16 text-black whitespace-nowrap text-white">
           {menuItems.map((item, index) => (
             <li key={index}>
-              <Link href={item.url} className="hover:text-blue-500">
-                {item.label}
-              </Link>
+              {item.url ? (
+                <Link href={item.url} className="hover:text-blue-500" onClick={() => setIsFAQOpen(false)} >
+                  {item.label}
+                </Link>
+              ) : (
+                <button onClick={openFAQ} className="hover:text-blue-500">
+                  {item.label}
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -60,33 +78,51 @@ export default function NavBar() {
 
       {isOpen && (
         <div className="fixed top-0 left-0 w-0.33 h-full bg-gray-900 bg-opacity-95 z-50 flex flex-col items-start p-8">
-          <button
-            onClick={toggleMenu}
-            className="self-end mb-8 text-white text-2xl focus:outline-none"
-          >
-            &times; {/* This entity "&times" represents the "X" symbol for closing the menu */}
+          <button onClick={toggleMenu} className="self-end mb-8 text-white text-2xl focus:outline-none">
+            &times;
           </button>
           <nav>
             <ul className="space-y-8 text-white text-lg mt-16 whitespace-nowrap">
               {menuItems.map((item, index) => (
                 <li key={index}>
-                  <Link href={item.url} className="hover:text-blue-300" onClick={toggleMenu}>
-                    {item.label}
-                  </Link>
+                  {item.url ? (
+                    <Link href={item.url} className="hover:text-blue-300" onClick={toggleMenu}>
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <button onClick={openFAQ} className="hover:text-blue-300">
+                      {item.label}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
           </nav>
         </div>
       )}
-      
-      {/* on Click outside the menu */}
+
+      {/* Click outside to close the menu */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-40"
-          onClick={toggleMenu} 
-        ></div>
+        <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={toggleMenu}></div>
       )}
+
+      {/* FAQ Section */}
+      <div
+        className={`${styles.faqContainer} ${isFAQOpen ? styles.show : styles.hide}`}
+      >
+        <button onClick={openFAQ} className="mt-4 text-white mb-1 rounded">
+    
+        </button>
+        <div className="text-white">
+          <h2 className="text-xs font-bold mb-4">Scene Landpage</h2>
+          <p className="mb-4 text-xs">License: CC Attribution</p>
+          <p className="text-xs mb-2">Author: Sebastian Sosnowski</p>
+          <a href="https://sketchfab.com/3d-models/star-cluster-15k-stars-model-51148b78a37a4a72b22d8e06f4293e07" className="text-xs">
+            Link
+          </a>
+        </div>
+
+      </div>
 
     </header>
   );

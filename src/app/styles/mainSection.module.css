@@ -9,7 +9,7 @@
   justify-content: center;
   gap: 10%;
   font-family: 'Roboto', sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-top: 15%;
   font-weight: bold;
   text-transform: uppercase;
@@ -72,4 +72,20 @@
 
 .button:hover span::after {
   height: 100%;
+}
+
+.paragragh{
+  text-align: center;
+  z-index: 50;
+  font-size: 0.8rem;
+}
+
+@media (min-width:900px){
+  .paragragh{
+    font-size: 1rem;
+  }
+
+  .button{
+    font-size: 0.9rem;
+  }
 }
