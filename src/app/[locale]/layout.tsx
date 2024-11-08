@@ -5,6 +5,7 @@ import { routing } from '../../i18n/routing'
 import { Inter } from "next/font/google";
 import "../globals.css";
 import NavBar from './components/navBar';
+import Footer from './components/Footer';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -40,11 +41,16 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <NavBar />
-          <main
-          // className="relative overflow-hidden"
-          >{children}</main>
-
+          <div className='absolute w-full' style={{ zIndex: '1' }}>
+            <NavBar />
+          </div>
+          <main style={{ zIndex: '0' }}
+            className="relative"
+          >{children}
+          </main>
+          <div className='absolute w-full' style={{ zIndex: '1', bottom: '0' }}>
+            <Footer />
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

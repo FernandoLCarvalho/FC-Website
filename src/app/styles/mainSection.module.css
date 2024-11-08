@@ -1,0 +1,75 @@
+.button {
+  position: relative;
+  padding: 10px 20px;
+  color: white;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+  margin-top: 15%;
+  font-weight: bold;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.button::before,
+.button::after,
+.button span::before,
+.button span::after {
+  content: '';
+  position: absolute;
+  background-color: white;
+  transition: all 1s ease-in-out;
+}
+
+/* Top border */
+.button::before {
+  height: 2px;
+  width: 0;
+  top: 0;
+  left: 0;
+}
+
+/* Right border */
+.button::after {
+  width: 2px;
+  height: 0;
+  top: 0;
+  right: 0;
+}
+
+/* Bottom border */
+.button span::before {
+  height: 2px;
+  width: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Left border */
+.button span::after {
+  width: 2px;
+  height: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.button:hover::before {
+  width: 100%;
+}
+
+.button:hover::after {
+  height: 100%;
+}
+
+.button:hover span::before {
+  width: 100%;
+}
+
+.button:hover span::after {
+  height: 100%;
+}

@@ -1,5 +1,8 @@
 {
   "HOME": "Home",
   "CONTACT": "Contact",
-  "ABOUT": "About me"
+  "ABOUT": "About me",
+  "SELECT_LANGUAGE": "Select Language",
+  "BUILDING_SOLUCTIONS": "Building efficient and scalable web solutions for the digital world.",
+  "QUOTE": "Request a quote"
 }

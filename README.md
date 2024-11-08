@@ -2,7 +2,7 @@
 
 **A Personal Presentation Website**
 
-This is my personal website, built to showcase my web development skills using Next.js 15. Through this project, I explore and demonstrate modern front-end techniques, including internationalization (i18n), component structuring best practices, and Dockerization.
+This is my personal website, built to showcase my web development skills using Next.js 14. Through this project, I explore and demonstrate modern front-end techniques, including internationalization (i18n), component structuring best practices, and Dockerization.
 
 ---
 
@@ -10,8 +10,10 @@ This is my personal website, built to showcase my web development skills using N
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Folder Structure](#folder-structure)
-- [Internationalization](#internationalization)
-- [Dockerization](#dockerization)
+- [Technologies Used](#technologies-used)
+  - [React Three Fiber for 3D Animations](#react-three-fiber-for-3d-animations)
+  - [Internationalization](#internationalization)
+  - [Dockerization](#dockerization)
 - [Getting Started](#getting-started)
   - [Installation](#installation)
   - [Running the Project](#running-the-project)
@@ -29,6 +31,7 @@ FC-Website is a Next.js-based personal site built to present my web development 
 
 ## Features
 
+- **3D Animated Scenes**: Engaging 3D animations created using React Three Fiber for enhanced interactivity.
 - **Internationalization**: Content is available in multiple languages, including English, Portuguese, and Spanish.
 - **Responsive Design**: Ensures accessibility across various devices.
 - **Dockerized Environment**: Fully containerized for a consistent and reliable environment setup.
@@ -56,12 +59,25 @@ This structure highlights the main folders related to functionality and i18n sup
 │   │   │   ├── components     # Holds components that may require language translation
 │   │   │   │   └── NavBar.tsx # Navigation component with language support
 │   │   │   └── page.tsx       # Main page
-│   │   └── favicon.ico        # Recognized by Next.js 15 for generating the site tab icon
-│
+│   │   ├──  favicon.ico       # Recognized by Next.js 14 for generating the site tab icon
+│       ├── scenes             # Contains 3D scenes using React Three Fiber
+│   │         └── Scene.tsx    # Main 3D animation scene
+│   │      
+│   │      
+
 ├── public                     # Contains images for the project
 │
 └── README.md                  # Project documentation
 ```
+
+## React Three Fiber for 3D Animations
+
+FC-Website uses React Three Fiber to create immersive 3D animations and scenes directly within the React component structure. This library allows smooth and highly customizable 3D animations, enhancing the user experience. The 3D models are imported as GLB files and rendered using a Canvas component, which integrates seamlessly with React’s rendering cycle.
+
+Key files and folders for 3D animations:
+
+- **scenes/Scene.tsx**: The main 3D scene rendered using React Three Fiber.
+- **models**: Folder containing 3D models (GLB files) for different animated scenes.
 
 ## Internationalization
 
