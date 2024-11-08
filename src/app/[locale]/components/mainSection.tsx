@@ -21,7 +21,7 @@ export default function MainSection() {
         className='flex flex-col items-center justify-center ml-10 mr-10 w-full h-[100vh]'
         style={{ pointerEvents: 'none', zIndex: '1', position: 'relative' }}
       >
-        <p>{t("BUILDING_SOLUCTIONS")}</p>
+        <p className={`${styles.paragragh}`}>{t("BUILDING_SOLUCTIONS")}</p>
 
         <button className={`whitespace-nowrap uppercase ${styles.button}`} style={{ pointerEvents: 'auto' }}>
           <span>

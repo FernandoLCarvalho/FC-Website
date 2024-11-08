@@ -1,1 +1,43 @@
-/* Maybe I use it */
+.faqContainer {
+    position: fixed;
+    right: 0;
+    height: 50vh;
+    top: 10%;
+    background-color: transparent;
+    color: white;
+    padding: 16px;
+    overflow-y: auto;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateX(100%);
+    opacity: 0;
+    z-index: 30;
+  }
+  
+
+.faqContainer.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+  /* Estado escondido */
+  .faqContainer.hide {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  @media (max-width: 950px){
+    .faqContainer{
+
+        top: 50%;
+        height: 35vh;
+       
+    }
+}
+
+  @media (max-width: 500px){
+    .faqContainer{
+        top: 5%;
+        height: 30vh;
+       
+    }
+  }

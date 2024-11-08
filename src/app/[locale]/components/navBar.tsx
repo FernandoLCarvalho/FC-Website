@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import styles from "../../styles/navbar.module.css"
 
 interface MenuItems {
   label: string;
@@ -106,23 +107,22 @@ export default function NavBar() {
       )}
 
       {/* FAQ Section */}
-      {isFAQOpen && (
-
-        <div className="fixed right-0 top-20 h-screen bg-transparent z-50 p-8 overflow-y-scroll">
-          <button
-            onClick={openFAQ}
-            className="mt-4 text-white mb-1 rounded"
-          >
-            &times;
-          </button>
-          <div className="bg-transparent text-white">
-            <h2 className="text-sm font-bold mb-4">Scene Landpage</h2>
-            <p className="mb-4 text-sm">License: CC Attribution</p>
-            <p className="text-sm">Author: Sebastian Sosnowski</p>
-
-          </div>
+      <div
+        className={`${styles.faqContainer} ${isFAQOpen ? styles.show : styles.hide}`}
+      >
+        <button onClick={openFAQ} className="mt-4 text-white mb-1 rounded">
+    
+        </button>
+        <div className="text-white">
+          <h2 className="text-xs font-bold mb-4">Scene Landpage</h2>
+          <p className="mb-4 text-xs">License: CC Attribution</p>
+          <p className="text-xs mb-2">Author: Sebastian Sosnowski</p>
+          <a href="https://sketchfab.com/3d-models/star-cluster-15k-stars-model-51148b78a37a4a72b22d8e06f4293e07" className="text-xs">
+            Link
+          </a>
         </div>
-      )}
+
+      </div>
 
     </header>
   );
