@@ -1,5 +1,4 @@
-import { Gltf, useAnimations, useGLTF, useScroll } from "@react-three/drei"
-import { useFrame } from "@react-three/fiber"
+import { useAnimations, useGLTF } from "@react-three/drei"
 import { useEffect, useRef } from "react"
 import { Group } from "three"
 
@@ -10,23 +9,31 @@ export default function Model() {
 
     // Sets up a reference to the group element, which represents the 3D object in the scene.
     const group = useRef<Group>(null)
-    
+
     // Destructures important data from the useGLTF hook:
     // - `nodes`: Individual parts of the model,
     // - `materials`: Materials applied to the model,
     // - `animations`: Any animations embedded in the model,
     // - `scene`: The overall scene graph of the model.
-    const { nodes, materials, animations, scene } = useGLTF(
-        '/glb/star_cluster_-_15k_stars_model.glb'
-    )
+    const {
+        // nodes, materials,
+        animations, scene } = useGLTF(
+            '/glb/star_cluster_-_15k_stars_model.glb'
+        )
 
     // Retrieves animation controls and clips associated with the model's scene.
-    const { actions, clips } = useAnimations(animations, scene)
+    const { actions,
+        // clips 
+    } = useAnimations(animations, scene)
 
     useEffect(() => {
         // Plays the "Global Rotation" animation clip but pauses it immediately (it won’t run until unpaused).
-        console.log(actions) //This is interesting to get the actions name, which could be just one or many. In this case it was just one called "Global Rotation"
-        actions["Global Rotation"]?.play().paused == true;
+        // console.log(actions) //This is interesting to get the actions name, which could be just one or many. In this case it was just one called "Global Rotation"
+        if (actions["Global Rotation"]) {
+            actions["Global Rotation"].play();
+            // actions["Global Rotation"].paused = true;
+        }
+
     }, []);
 
     return (

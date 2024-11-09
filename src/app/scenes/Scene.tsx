@@ -3,11 +3,11 @@
 import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react';
 import Model from '../models/Model';
-import { Bounds, Html, OrbitControls, ScrollControls, useProgress } from '@react-three/drei';
+import { Bounds, Html, OrbitControls, useProgress } from '@react-three/drei';
 
 function Loader() {
     // Hook to get the loading progress
-    const { progress, active } = useProgress();
+    const { progress } = useProgress();
     // Displays the loading progress as a percentage
     return <Html center> {progress.toFixed(1)}</Html>
 }

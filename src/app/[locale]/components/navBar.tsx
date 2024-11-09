@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../../styles/navbar.module.css"
 
 interface MenuItems {

@@ -2,13 +2,11 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing'
-import { Inter } from "next/font/google";
 import "../globals.css";
 import NavBar from './components/navBar';
 import Footer from './components/Footer';
 
-
-const inter = Inter({ subsets: ["latin"] });
+type Locale = 'en' | 'es' | 'pt';
 
 export const metadata = {
   title: "My Website",
@@ -29,7 +27,7 @@ export default async function LocaleLayout({
   const { locale } = await asyncParams;
 
   // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale as Locale)) {
     notFound();
   }
 
