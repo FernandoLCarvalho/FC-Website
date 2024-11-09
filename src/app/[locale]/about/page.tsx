@@ -6,7 +6,7 @@ export default function AboutPage() {
                 Aqui está o local onde você pode me encontrar:
             </p>
             <iframe 
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAFCXp3GgBpF875Aof3Oe5vN3SpdM_HcFs&q=-15.760608,-47.884516" 
+                src="https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=-15.760608,-47.884516" 
                 width="600" 
                 height="450" 
                 style={{ border: 0 }} 
