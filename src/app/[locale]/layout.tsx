@@ -5,6 +5,7 @@ import { routing } from '../../i18n/routing'
 import "../globals.css";
 import NavBar from './components/navBar';
 import Footer from './components/Footer';
+import Head from 'next/head';
 
 type Locale = 'en' | 'es' | 'pt';
 
@@ -47,6 +48,11 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
+       <Head>
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; img-src *; media-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self';" />
+        <link rel="manifest" href="/manifest.json" />
+      </Head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <div className='absolute w-full' style={{ zIndex: '1' }}>
