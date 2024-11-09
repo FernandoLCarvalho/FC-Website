@@ -33,7 +33,7 @@ export default function MainSection() {
       </article>
 
       <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: '0' }}>
-        <Scene /> {/* By now this is the first 3D Scene created in this project */}
+        <Scene /> 
       </div>
     </section>
 
