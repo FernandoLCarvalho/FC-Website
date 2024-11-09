@@ -24,19 +24,6 @@ export const metadata = {
   },
 };
 
-export const viewport = "width=device-width, initial-scale=1, maximum-scale=1";
-export const themeColor = "#000000";
-
-export const otherMetadata = {
-  "http-equiv": {
-    "X-UA-Compatible": "IE=edge",
-    "Content-Security-Policy": "default-src 'self'; img-src *; media-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self';"
-  },
-  link: [
-    { rel: "manifest", href: "/manifest.json" },
-  ],
-};
-
 export default async function LocaleLayout({
   children,
   params: asyncParams
@@ -55,6 +42,13 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; img-src *; media-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self';" />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <div className='absolute w-full' style={{ zIndex: '1' }}>
