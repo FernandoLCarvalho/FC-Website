@@ -1,12 +1,13 @@
 "use client"
 
-import dynamic from 'next/dynamic';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/mainSection.module.css'
 import { useTranslations } from "next-intl";
 
-const Scene = dynamic(() => import('../../scenes/Scene'))
+
+
 
 export default function MainSection() {
 
