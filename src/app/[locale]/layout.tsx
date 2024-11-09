@@ -13,6 +13,16 @@ export const metadata = {
   description: "Building efficient and scalable web solutions for the digital world.",
   icons: {
     icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  themeColor: "#000000",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
   },
 };
 
