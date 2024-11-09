@@ -5,6 +5,7 @@ import { routing } from '../../i18n/routing';
 import "../globals.css";
 import NavBar from './components/navBar';
 import Footer from './components/Footer';
+import LoadingScreen from './components/LoadingScreen';
 
 type Locale = 'en' | 'es' | 'pt';
 
@@ -50,6 +51,7 @@ export default async function LocaleLayout({
         <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="1563x1563" />
       </head>
       <body>
+        <LoadingScreen />
         <NextIntlClientProvider messages={messages}>
           <div className='absolute w-full' style={{ zIndex: '1' }}>
             <NavBar />

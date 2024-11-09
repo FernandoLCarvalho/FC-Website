@@ -19,10 +19,19 @@
     opacity: 1;
   }
   
-  /* Estado escondido */
   .faqContainer.hide {
     transform: translateX(100%);
     opacity: 0;
+  }
+
+  .transitionFont {
+    transition: font-size 0.3s ease-in-out;
+    transition: color 0.5s ease-in-out;
+  }
+  
+  .transitionFont:hover {
+    font-size: 0.8em;
+    color: rgb(50, 43, 255)
   }
 
   @media (max-width: 950px){

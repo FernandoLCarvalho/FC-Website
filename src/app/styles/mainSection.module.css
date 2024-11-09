@@ -77,15 +77,30 @@
 .paragragh{
   text-align: center;
   z-index: 50;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
+  margin-bottom: 20%;
+}
+.button{
+  font-size: 1.1rem;
 }
 
 @media (min-width:900px){
   .paragragh{
-    font-size: 1rem;
+    font-size: 2rem;
   }
 
   .button{
-    font-size: 0.9rem;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width:500px){
+  .paragragh{
+    font-size: 1rem;
+    margin-bottom: 0%;
+  }
+
+  .button{
+    font-size: 1rem;
   }
 }

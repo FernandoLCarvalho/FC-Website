@@ -1,0 +1,23 @@
+/* Keyframes are used to define a series of steps to animation */
+@keyframes customBounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    20% {
+      transform: translateY(-8px); 
+    }
+    50% {
+      transform: translateY(0);
+    }
+    70% {
+      transform: translateY(-4px); 
+    }
+    90% {
+      transform: translateY(2px);
+    }
+  }
+  
+  .customBounce {
+    animation: customBounce 1.2s infinite;
+  }
+  

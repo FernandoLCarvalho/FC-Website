@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { useState } from "react";
 import styles from "../../styles/navbar.module.css"
+import Faq from "./Feature/Faq";
 
 interface MenuItems {
   label: string;
@@ -110,20 +111,13 @@ export default function NavBar() {
       <div
         className={`${styles.faqContainer} ${isFAQOpen ? styles.show : styles.hide}`}
       >
-        <button onClick={openFAQ} className="mt-4 text-white mb-1 rounded">
-    
+        <button onClick={openFAQ} className="text-white mb-1">
+          &times;
         </button>
-        <div className="text-white">
-          <h2 className="text-xs font-bold mb-4">Scene Landpage</h2>
-          <p className="mb-4 text-xs">License: CC Attribution</p>
-          <p className="text-xs mb-2">Author: Sebastian Sosnowski</p>
-          <a href="https://sketchfab.com/3d-models/star-cluster-15k-stars-model-51148b78a37a4a72b22d8e06f4293e07" className="text-xs">
-            Link
-          </a>
-        </div>
+
+        <Faq />
 
       </div>
-
     </header>
   );
 }
