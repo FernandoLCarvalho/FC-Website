@@ -13,7 +13,6 @@ export const metadata = {
   description: "Building efficient and scalable web solutions for the digital world.",
   icons: {
     icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
   },
   appleWebApp: {
     capable: true,
@@ -46,8 +45,9 @@ export default async function LocaleLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; img-src *; media-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self';" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="1563x1563" />
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>
