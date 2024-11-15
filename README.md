@@ -93,25 +93,6 @@ FC-Website is fully Dockerized, enabling easy setup and consistent environment m
 
 ---
 
-## Getting Started
-
-### Installation
-1. **Clone the repository**:
-    ```bash
-   git clone https://github.com/FernandoLCarvalho/FC-Website.git
-    ```
-2. **Navigate into the project directory**:
-    ```bash
-    cd FC-Website
-    ```
-3. **Run the Dockerized environment (this will automatically install dependencies inside the container)**:
-     ```bash
-    docker-compose up --build
-    ```
-##  Accessing the Application
-
-    After running the Docker setup, you can access the application by visiting http://localhost:3001 in your web browser.
-
 ## Deployment
 
 - **Link**: [Portfolio (Under Construction)](https://own-website-eosin.vercel.app/)
