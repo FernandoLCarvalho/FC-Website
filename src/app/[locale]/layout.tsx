@@ -11,7 +11,7 @@ import { LocaleProvider } from "../../context/LocaleContext";
 type Locale = "en" | "es" | "pt";
 
 export const metadata = {
-  title: "My Website",
+  title: "Fernando Carvalho Portfolio",
   description:
     "Building efficient and scalable web solutions for the digital world.",
   icons: {
@@ -67,11 +67,11 @@ export default async function LocaleLayout({
             <div className="absolute w-full" style={{ zIndex: "1" }}>
               <NavBar />
             </div>
-            <main style={{ zIndex: "0" }} className="relative">
+            <main style={{ zIndex: "0" }} className="relative pt-16">
               {children}
             </main>
             <div
-              className="absolute w-full"
+              className="relative bottom-0 w-full"
               style={{ zIndex: "1", bottom: "0" }}
             >
               <Footer />

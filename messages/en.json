@@ -4,5 +4,10 @@
   "ABOUT": "About me",
   "SELECT_LANGUAGE": "Select Language",
   "BUILDING_SOLUCTIONS": "Building efficient and scalable web solutions for the digital world.",
-  "QUOTE": "Request a quote"
+  "QUOTE": "Talk to me",
+  "FAQ": "Please go back to homepage to see the FAQs.",
+  "WARN": "Warning",
+  "WHATSAPP_CONTACT": "Hello, I'm interested in discussing a job opportunity with you. Could we talk?",
+  "DESCRIPTION": "I am a Frontend developer with over 2 years of practical experience. Below is a list of the technologies I use in my day-to-day work.",
+  "CURRENTLY": "Currently living next to:"
 }

@@ -3,10 +3,11 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "../../styles/navbar.module.css";
 import Faq from "./Feature/Faq";
 import { useLocale } from "@/context/LocaleContext";
+import { Toast } from "primereact/toast";
 
 interface MenuItems {
   label: string;
@@ -17,22 +18,37 @@ export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isFAQOpen, setIsFAQOpen] = useState(false);
   const t = useTranslations();
+  const toast = useRef<Toast>(null);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const show = (phrase: string) => {
+    toast.current?.show({
+      severity: "warn",
+      summary: t("WARN"),
+      detail: phrase,
+      life: 5000,
+    });
+  };
+
   const openFAQ = () => {
-    setIsFAQOpen(!isFAQOpen);
+    if (window.location.pathname.split("/").slice(2).join("/") === "") {
+      setIsFAQOpen(!isFAQOpen);
+    } else {
+      show(t("FAQ"));
+    }
   };
 
   type Locale = "en" | "pt" | "es";
 
-  const { locale, setLocale } = useLocale();
+  const { locale } = useLocale();
 
   const handleLocaleChange = (newLocale: Locale) => {
-    // setLocale(newLocale);
-    window.location.href = `/${newLocale}`;
+    const currentPath = window.location.pathname.split("/").slice(2).join("/");
+    const newPath = `/${newLocale}/${currentPath}`;
+    window.location.href = newPath;
   };
 
   const menuItems: MenuItems[] = [
@@ -44,6 +60,7 @@ export default function NavBar() {
 
   return (
     <header className="grid grid-cols-3 sm:grid-cols-3 md:grid-col-2 items-center px-16 bg-transparent shadow-md w-full h-18 mx-auto">
+      <Toast ref={toast} />
       {/* Logo */}
       <div className="flex items-center justify-start">
         <Image
@@ -136,30 +153,21 @@ export default function NavBar() {
 
       {/* Language Switcher */}
       <div className="flex items-center justify-end space-x-4 w-full">
-        <button
-          className={`hover:text-blue-300 ${
-            locale === "en" ? "font-bold" : ""
-          }`}
-          onClick={() => handleLocaleChange("en")}
+        <select
+          value={locale}
+          onChange={(e) => handleLocaleChange(e.target.value as Locale)}
+          className="bg-transparent text-white border border-gray-500 px-2 py-1 rounded cursor-pointer hover:border-blue-300 focus:outline-none text-sm"
         >
-          EN
-        </button>
-        <button
-          className={`hover:text-blue-300 ${
-            locale === "pt" ? "font-bold" : ""
-          }`}
-          onClick={() => handleLocaleChange("pt")}
-        >
-          PT
-        </button>
-        <button
-          className={`hover:text-blue-300 ${
-            locale === "es" ? "font-bold" : ""
-          }`}
-          onClick={() => handleLocaleChange("es")}
-        >
-          ES
-        </button>
+          <option value="en" className="bg-black text-white">
+            EN
+          </option>
+          <option value="pt" className="bg-black text-white">
+            PT-BR
+          </option>
+          <option value="es" className="bg-black text-white">
+            ES
+          </option>
+        </select>
       </div>
 
       {/* FAQ Section */}
