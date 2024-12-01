@@ -1,19 +1,21 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { routing } from '../../i18n/routing';
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { routing } from "../../i18n/routing";
 import "../globals.css";
-import NavBar from './components/navBar';
-import Footer from './components/Footer';
-import LoadingScreen from './components/LoadingScreen';
+import NavBar from "./components/navBar";
+import Footer from "./components/Footer";
+import { LocaleProvider } from "../../context/LocaleContext";
+// import LoadingScreen from './components/LoadingScreen';
 
-type Locale = 'en' | 'es' | 'pt';
+type Locale = "en" | "es" | "pt";
 
 export const metadata = {
-  title: "My Website",
-  description: "Building efficient and scalable web solutions for the digital world.",
+  title: "Fernando Carvalho Portfolio",
+  description:
+    "Building efficient and scalable web solutions for the digital world.",
   icons: {
-    icon: '/favicon.ico',
+    icon: "/favicon.ico",
   },
   appleWebApp: {
     capable: true,
@@ -26,12 +28,11 @@ export const metadata = {
 
 export default async function LocaleLayout({
   children,
-  params: asyncParams
+  params: asyncParams,
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-
   const { locale } = await asyncParams;
 
   if (!routing.locales.includes(locale as Locale)) {
@@ -43,26 +44,40 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
         <meta name="theme-color" content="#000000" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="1563x1563" />
+        <link
+          rel="icon"
+          href="/favicon.ico"
+          type="image/x-icon"
+          sizes="1563x1563"
+        />
       </head>
       <body>
-        <LoadingScreen />
-        <NextIntlClientProvider messages={messages}>
-          <div className='absolute w-full' style={{ zIndex: '1' }}>
-            <NavBar />
-          </div>
-          <main style={{ zIndex: '0' }} className="relative">
-            {children}
-          </main>
-          <div className='absolute w-full' style={{ zIndex: '1', bottom: '0' }}>
-            <Footer />
-          </div>
-        </NextIntlClientProvider>
+        {/* <LoadingScreen /> */}
+        <LocaleProvider>
+          {" "}
+          <NextIntlClientProvider messages={messages}>
+            <div className="absolute w-full" style={{ zIndex: "1" }}>
+              <NavBar />
+            </div>
+            <main style={{ zIndex: "0" }} className="relative pt-16">
+              {children}
+            </main>
+            <div
+              className="relative bottom-0 w-full"
+              style={{ zIndex: "1", bottom: "0" }}
+            >
+              <Footer />
+            </div>
+          </NextIntlClientProvider>
+        </LocaleProvider>
       </body>
     </html>
   );
