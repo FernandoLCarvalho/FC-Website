@@ -64,14 +64,14 @@ export default async function LocaleLayout({
         <LocaleProvider>
           {" "}
           <NextIntlClientProvider messages={messages}>
-            <div className="absolute w-full" style={{ zIndex: "1" }}>
+            <div className="absolute w-full" style={{ zIndex: "2" }}>
               <NavBar />
             </div>
-            <main style={{ zIndex: "0" }} className="relative pt-16">
+            <main style={{ zIndex: "0" }} className="relative">
               {children}
             </main>
             <div
-              className="relative bottom-0 w-full"
+              className="absolute w-full"
               style={{ zIndex: "1", bottom: "0" }}
             >
               <Footer />

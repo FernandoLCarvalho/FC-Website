@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
-import { useRef, useState } from "react";
+import { Link, usePathname } from "@/i18n/routing";
+import { useEffect, useRef, useState } from "react";
 import styles from "../../styles/navbar.module.css";
 import Faq from "./Feature/Faq";
 import { useLocale } from "@/context/LocaleContext";
@@ -19,6 +19,10 @@ export default function NavBar() {
   const [isFAQOpen, setIsFAQOpen] = useState(false);
   const t = useTranslations();
   const toast = useRef<Toast>(null);
+  const pathname = usePathname(); // Hook para rastrear mudanças de rota
+
+  type Locale = "en" | "pt" | "es";
+  const { locale } = useLocale();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -34,19 +38,22 @@ export default function NavBar() {
   };
 
   const openFAQ = () => {
-    if (window.location.pathname.split("/").slice(2).join("/") === "") {
-      setIsFAQOpen(!isFAQOpen);
+    const isHomePage = window.location.pathname.split("/").slice(2).join("");
+
+    if (isHomePage === "") {
+      setIsFAQOpen(!isFAQOpen); 
     } else {
-      show(t("FAQ"));
+      show(t("FAQ")); 
+      setIsFAQOpen(!!isFAQOpen);
     }
   };
 
-  type Locale = "en" | "pt" | "es";
-
-  const { locale } = useLocale();
+  useEffect(() => {
+    setIsFAQOpen(false);
+  }, [pathname]);
 
   const handleLocaleChange = (newLocale: Locale) => {
-    const currentPath = window.location.pathname.split("/").slice(2).join("/");
+    const currentPath = pathname.split("/").slice(2).join("/");
     const newPath = `/${newLocale}/${currentPath}`;
     window.location.href = newPath;
   };
@@ -59,7 +66,7 @@ export default function NavBar() {
   ];
 
   return (
-    <header className="grid grid-cols-3 sm:grid-cols-3 md:grid-col-2 items-center px-16 bg-transparent shadow-md w-full h-18 mx-auto">
+    <header className="grid grid-cols-3 sm:grid-cols-3 md:grid-col-2 items-center px-16 bg-gradient-to-b from-[black] to-[transparent] shadow-md w-full h-18 mx-auto z-1000">
       <Toast ref={toast} />
       {/* Logo */}
       <div className="flex items-center justify-start">

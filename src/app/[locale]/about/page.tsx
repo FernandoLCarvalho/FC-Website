@@ -1,30 +1,14 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { Technologies } from "@/constants/technologies";
 
 export default function AboutPage() {
   const t = useTranslations();
-  const technologies = [
-    {
-      name: "React",
-      image: "/React icon.svg",
-      description: "A JavaScript library for building user interfaces.",
-    },
-    {
-      name: "Tailwind CSS",
-      image: "/Tailwind CSS icon.svg",
-      description: "A utility-first CSS framework for rapid UI development.",
-    },
-    {
-      name: "Next.js",
-      image: "/nextjs ico.svg",
-      description:
-        "A React framework for production with server-side rendering and static site generation.",
-    },
-  ];
 
   return (
-    <div className="p-8 flex flex-col items-center justify-center pt-96 md:pt-96 lg:pt-0 h-[100vh] overflow-scroll bg-gradient-to-b from-[black] to-[#555353]"
-    style={{}}
+    <div
+      className="p-8 flex flex-col items-center justify-center pt-96 md:pt-96 lg:pt-0 h-[100vh] overflow-scroll bg-gradient-to-b from-[black] to-[#555353]"
+      style={{}}
     >
       <Image
         src={"/Me.png"}
@@ -37,7 +21,7 @@ export default function AboutPage() {
       <p className="w-2/3 justify text-center mb-5">{t("DESCRIPTION")}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-        {technologies.map((tech, index) => (
+        {Technologies.map((tech, index) => (
           <div
             key={index}
             className="flex flex-col items-center justify-center p-4 border rounded-lg shadow-md"
