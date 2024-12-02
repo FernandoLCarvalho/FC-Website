@@ -6,7 +6,7 @@ import "../globals.css";
 import NavBar from "./components/navBar";
 import Footer from "./components/Footer";
 import { LocaleProvider } from "../../context/LocaleContext";
-// import LoadingScreen from './components/LoadingScreen';
+import LoadingScreen from './components/LoadingScreen';
 
 type Locale = "en" | "es" | "pt";
 
@@ -60,7 +60,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body>
-        {/* <LoadingScreen /> */}
+        <LoadingScreen />
         <LocaleProvider>
           {" "}
           <NextIntlClientProvider messages={messages}>
