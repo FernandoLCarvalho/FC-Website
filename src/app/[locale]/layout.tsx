@@ -1,12 +1,12 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "../../i18n/routing";
+import { routing } from "@/i18n/routing";
 import "../globals.css";
-import NavBar from "./components/navBar";
-import Footer from "./components/Footer";
-import { LocaleProvider } from "../../context/LocaleContext";
-import LoadingScreen from './components/LoadingScreen';
+import NavBar from "@/components/navBar";
+import Footer from "@/components/Footer";
+import { LocaleProvider } from "@/context/LocaleContext";
+import LoadingScreen from "@/components/LoadingScreen";
 
 type Locale = "en" | "es" | "pt";
 
@@ -59,21 +59,15 @@ export default async function LocaleLayout({
           sizes="1563x1563"
         />
       </head>
-      <body>
+      <body className="flex flex-col">
         <LoadingScreen />
         <LocaleProvider>
-          {" "}
           <NextIntlClientProvider messages={messages}>
-            <div className="absolute w-full" style={{ zIndex: "2" }}>
+            <div className="z-2">
               <NavBar />
             </div>
-            <main style={{ zIndex: "0" }} className="relative">
-              {children}
-            </main>
-            <div
-              className="absolute w-full"
-              style={{ zIndex: "1", bottom: "0" }}
-            >
+            <main className="flex-grow">{children}</main>
+            <div className="z-2">
               <Footer />
             </div>
           </NextIntlClientProvider>

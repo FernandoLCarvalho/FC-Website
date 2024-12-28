@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import styles from "../../../styles/navbar.module.css";
+import styles from "@/styles/navbar.module.css";
 
 export default function Faq() {
 

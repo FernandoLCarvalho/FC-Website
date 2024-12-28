@@ -6,10 +6,8 @@ export default function AboutPage() {
   const t = useTranslations();
 
   return (
-    <div
-      className="p-8 flex flex-col items-center justify-center pt-96 md:pt-96 lg:pt-0 h-[100vh] overflow-scroll bg-gradient-to-b from-[black] to-[#555353]"
-      style={{}}
-    >
+    <div className="flex flex-col items-center justify-start pt-24 lg:pt-32 pb-24 bg-gradient-to-b from-black to-[#555353]">
+      <h1 className="text-3xl font-bold mb-5">{t("ABOUT")}</h1>
       <Image
         src={"/Me.png"}
         alt="Fernando Carvalho"
@@ -17,8 +15,7 @@ export default function AboutPage() {
         height={300}
         className="mb-10 rounded-full"
       />
-      <h1 className="text-3xl font-bold mb-5">{t("ABOUT")}</h1>
-      <p className="w-2/3 justify text-center mb-5">{t("DESCRIPTION")}</p>
+      <p className="w-4/5 sm:w-2/3 text-center mb-5">{t("DESCRIPTION")}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
         {Technologies.map((tech, index) => (
@@ -30,8 +27,8 @@ export default function AboutPage() {
             <Image
               src={tech.image}
               alt={tech.name}
-              width={30}
-              height={30}
+              width={40}
+              height={40}
               className="mb-4"
             />
             <h3 className="text-lg font-bold text-black">{tech.name}</h3>
@@ -45,8 +42,8 @@ export default function AboutPage() {
           src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_API_KEY}&q=-15.760608,-47.884516`}
           width="350"
           height="350"
-          className="h-40 lg:h-64 mt-5 rounded"
-          style={{ border: 0, display: "flex", alignSelf: "center" }}
+          className="mt-5 rounded shadow-lg"
+          style={{ border: 0 }}
           allowFullScreen={true}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

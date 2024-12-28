@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { useEffect, useRef, useState } from "react";
-import styles from "../../styles/navbar.module.css";
+import styles from "@/styles/navbar.module.css";
 import Faq from "./Feature/Faq";
 import { useLocale } from "@/context/LocaleContext";
 import { Toast } from "primereact/toast";
@@ -41,9 +41,9 @@ export default function NavBar() {
     const isHomePage = window.location.pathname.split("/").slice(2).join("");
 
     if (isHomePage === "") {
-      setIsFAQOpen(!isFAQOpen); 
+      setIsFAQOpen(!isFAQOpen);
     } else {
-      show(t("FAQ")); 
+      show(t("FAQ"));
       setIsFAQOpen(!!isFAQOpen);
     }
   };
@@ -61,7 +61,7 @@ export default function NavBar() {
   const menuItems: MenuItems[] = [
     { label: t("HOME"), url: "/" },
     { label: t("ABOUT"), url: "/about" },
-    { label: t("CONTACT"), url: "/contact" },
+    // { label: t("CONTACT"), url: "/contact" },
     { label: "FAQ" },
   ];
 

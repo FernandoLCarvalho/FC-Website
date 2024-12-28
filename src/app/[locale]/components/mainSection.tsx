@@ -1,11 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import styles from "../../styles/mainSection.module.css";
+import styles from "@/styles/mainSection.module.css";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-const Scene = dynamic(() => import("../../scenes/Scene"));
+const Scene = dynamic(() => import("@/scenes/Scene"));
 
 export default function MainSection() {
   const t = useTranslations();
@@ -18,7 +18,7 @@ export default function MainSection() {
   };
 
   return (
-    <section className="flex flex-row items-center justify-center">
+    <section className="flex flex-row items-center justify-center overflow-y-scroll h-screen">
       <article
         className="flex flex-col items-center justify-center ml-10 mr-10 w-full h-[100vh]"
         style={{ pointerEvents: "none", zIndex: "1", position: "relative" }}
