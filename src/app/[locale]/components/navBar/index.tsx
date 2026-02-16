@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/routing";
-import { useEffect, useRef, useState } from "react";
-import styles from "@/styles/navbar.module.css";
-import Faq from "./Feature/Faq";
+import { Link, usePathname, useRouter } from "@/i18n/routing";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import styles from "./styles.module.css";
+
 import { useLocale } from "@/context/LocaleContext";
 import { Toast } from "primereact/toast";
+import Faq from "../Feature/Faq";
 
 interface MenuItems {
   label: string;
@@ -15,18 +16,18 @@ interface MenuItems {
 }
 
 export default function NavBar() {
+  const headerRef = useRef<HTMLElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isFAQOpen, setIsFAQOpen] = useState(false);
   const t = useTranslations();
   const toast = useRef<Toast>(null);
-  const pathname = usePathname(); // Hook para rastrear mudanças de rota
+  const router = useRouter();
+  const pathname = usePathname();
 
   type Locale = "en" | "pt" | "es";
   const { locale } = useLocale();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const show = (phrase: string) => {
     toast.current?.show({
@@ -41,10 +42,10 @@ export default function NavBar() {
     const isHomePage = window.location.pathname.split("/").slice(2).join("");
 
     if (isHomePage === "") {
-      setIsFAQOpen(!isFAQOpen);
+      setIsFAQOpen((prev) => !prev);
     } else {
       show(t("FAQ"));
-      setIsFAQOpen(!!isFAQOpen);
+      setIsFAQOpen(false);
     }
   };
 
@@ -53,48 +54,65 @@ export default function NavBar() {
   }, [pathname]);
 
   const handleLocaleChange = (newLocale: Locale) => {
-    const currentPath = pathname.split("/").slice(2).join("/");
-    const newPath = `/${newLocale}/${currentPath}`;
-    window.location.href = newPath;
+    router.push(pathname, { locale: newLocale });
   };
 
   const menuItems: MenuItems[] = [
     { label: t("HOME"), url: "/" },
     { label: t("ABOUT"), url: "/about" },
-    // { label: t("CONTACT"), url: "/contact" },
     { label: "FAQ" },
   ];
 
+  useLayoutEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    const set = () => {
+      const h = el.getBoundingClientRect().height;
+      document.documentElement.style.setProperty("--nav-h", `${h}px`);
+    };
+
+    set();
+
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+
+    window.addEventListener("resize", set);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", set);
+    };
+  }, []);
+
   return (
-    <header className="grid grid-cols-3 sm:grid-cols-3 md:grid-col-2 items-center px-16 bg-gradient-to-b from-[black] to-[transparent] shadow-md w-full h-18 mx-auto z-1000">
+    <header className={styles.header}>
       <Toast ref={toast} />
-      {/* Logo */}
-      <div className="flex items-center justify-start">
+
+      <div className={styles.logoWrapper}>
         <Image
           src="/Logo.svg"
           alt="Logo"
           width={50}
           height={50}
-          style={{ minWidth: "15%" }}
+          className={styles.logo}
           loading="lazy"
         />
       </div>
 
-      {/* Large screen navigation menu */}
-      <nav className="hidden sm:flex justify-center">
-        <ul className="flex space-x-16 text-black whitespace-nowrap text-white">
+      <nav className={styles.navDesktop}>
+        <ul className={styles.navList}>
           {menuItems.map((item, index) => (
             <li key={index}>
               {item.url ? (
                 <Link
                   href={item.url}
-                  className="hover:text-blue-500"
+                  className={styles.navItemLink}
                   onClick={() => setIsFAQOpen(false)}
                 >
                   {item.label}
                 </Link>
               ) : (
-                <button onClick={openFAQ} className="hover:text-blue-500">
+                <button onClick={openFAQ} className={styles.navItemButton}>
                   {item.label}
                 </button>
               )}
@@ -103,43 +121,41 @@ export default function NavBar() {
         </ul>
       </nav>
 
-      <div className="flex justify-center sm:hidden items-center">
-        <button
-          onClick={toggleMenu}
-          className="text-white focus:outline-none h-9 w-9 sm:h-8 md:h-7 lg:h-10"
-        >
+      <div className={styles.hamburgerWrapper}>
+        <button onClick={toggleMenu} className={styles.hamburgerButton}>
           <Image
             src="/menu-icon.svg"
             alt="Menu Icon"
             width={24}
             height={24}
-            className="w-full"
+            className={styles.menuIcon}
           />
         </button>
       </div>
 
       {isOpen && (
-        <div className="fixed top-0 left-0 w-0.33 h-full bg-gray-900 bg-opacity-95 z-50 flex flex-col items-start p-8">
-          <button
-            onClick={toggleMenu}
-            className="self-end mb-8 text-white text-2xl focus:outline-none"
-          >
+        <div className={styles.mobileMenu}>
+          <button onClick={toggleMenu} className={styles.mobileCloseButton}>
             &times;
           </button>
+
           <nav>
-            <ul className="space-y-8 text-white text-lg mt-16 whitespace-nowrap">
+            <ul className={styles.mobileNavList}>
               {menuItems.map((item, index) => (
                 <li key={index}>
                   {item.url ? (
                     <Link
                       href={item.url}
-                      className="hover:text-blue-300"
+                      className={styles.mobileNavLink}
                       onClick={toggleMenu}
                     >
                       {item.label}
                     </Link>
                   ) : (
-                    <button onClick={openFAQ} className="hover:text-blue-300">
+                    <button
+                      onClick={openFAQ}
+                      className={styles.mobileNavButton}
+                    >
                       {item.label}
                     </button>
                   )}
@@ -150,40 +166,32 @@ export default function NavBar() {
         </div>
       )}
 
-      {/* Click outside to close the menu */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-40"
-          onClick={toggleMenu}
-        ></div>
-      )}
+      {isOpen && <div className={styles.backdrop} onClick={toggleMenu} />}
 
-      {/* Language Switcher */}
-      <div className="flex items-center justify-end space-x-4 w-full">
+      <div className={styles.languageWrapper}>
         <select
           value={locale}
           onChange={(e) => handleLocaleChange(e.target.value as Locale)}
-          className="bg-transparent text-white border border-gray-500 px-2 py-1 rounded cursor-pointer hover:border-blue-300 focus:outline-none text-sm"
+          className={styles.languageSelect}
         >
-          <option value="en" className="bg-black text-white">
+          <option value="en" className={styles.languageOption}>
             EN
           </option>
-          <option value="pt" className="bg-black text-white">
+          <option value="pt" className={styles.languageOption}>
             PT-BR
           </option>
-          <option value="es" className="bg-black text-white">
+          <option value="es" className={styles.languageOption}>
             ES
           </option>
         </select>
       </div>
 
-      {/* FAQ Section */}
       <div
         className={`${styles.faqContainer} ${
           isFAQOpen ? styles.show : styles.hide
         }`}
       >
-        <button onClick={openFAQ} className="text-white mb-1">
+        <button onClick={openFAQ} className={styles.faqCloseButton}>
           &times;
         </button>
 

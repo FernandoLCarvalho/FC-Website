@@ -6,21 +6,14 @@ import { Group } from "three";
 useGLTF.preload("/glb/star_cluster_-_15k_stars_model.glb");
 
 export default function Model() {
-  // Sets up a reference to the group element, which represents the 3D object in the scene.
   const group = useRef<Group>(null);
 
-  // Destructures important data from the useGLTF hook:
-  // - `nodes`: Individual parts of the model,
-  // - `materials`: Materials applied to the model,
-  // - `animations`: Any animations embedded in the model,
-  // - `scene`: The overall scene graph of the model.
   const {
     // nodes, materials,
     animations,
     scene,
   } = useGLTF("/glb/star_cluster_-_15k_stars_model.glb");
 
-  // Retrieves animation controls and clips associated with the model's scene.
   const {
     actions,
     // clips

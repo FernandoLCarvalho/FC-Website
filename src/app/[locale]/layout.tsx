@@ -3,10 +3,11 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
-import NavBar from "@/components/navBar";
-import Footer from "@/components/Footer";
+
 import { LocaleProvider } from "@/context/LocaleContext";
 import LoadingScreen from "@/components/LoadingScreen";
+import NavBar from "./components/navBar";
+import Footer from "./components/footer";
 
 type Locale = "en" | "es" | "pt";
 
@@ -59,14 +60,14 @@ export default async function LocaleLayout({
           sizes="1563x1563"
         />
       </head>
-      <body className="flex flex-col">
+      <body className="min-h-screen flex flex-col">
         <LoadingScreen />
         <LocaleProvider>
           <NextIntlClientProvider messages={messages}>
             <div className="z-2">
               <NavBar />
             </div>
-            <main className="flex-grow">{children}</main>
+            <main className="flex-1 flex">{children}</main>
             <div className="z-2">
               <Footer />
             </div>

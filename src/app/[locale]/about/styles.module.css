@@ -1,0 +1,78 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120px;
+  padding-bottom: 120px;
+  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(to bottom, black, #555353);
+  color: white;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  margin-bottom: 40px;
+  border-radius: 50%;
+}
+
+.description {
+  max-width: 800px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.techGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.techCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background: rgba(220, 255, 255, 0.25);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.techIcon {
+  margin-bottom: 16px;
+}
+
+.techName {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: black;
+}
+
+.mapSection {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.map {
+  margin-top: 20px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+  .techGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,0 +1,12 @@
+.footer {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, #555353, black);
+  opacity: 0.9;
+}
+.text {
+  color: white;
+  font-size: 12px;
+}

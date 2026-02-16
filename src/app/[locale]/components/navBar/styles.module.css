@@ -1,0 +1,263 @@
+.header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+
+  padding-left: 64px;
+  padding-right: 64px;
+
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+
+  background: linear-gradient(to bottom, black, transparent);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
+  z-index: 1000;
+  position: relative;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.logo {
+  min-width: 15%;
+}
+
+.navDesktop {
+  display: none;
+  justify-content: center;
+}
+
+.navList {
+  display: flex;
+  gap: 64px;
+  white-space: nowrap;
+  color: white;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navItemLink {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.navItemLink:hover {
+  color: #3b82f6;
+}
+
+.navItemButton {
+  background: transparent;
+  border: 0;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  transition: color 0.2s ease-in-out;
+}
+
+.navItemButton:hover {
+  color: #3b82f6;
+}
+
+.hamburgerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hamburgerButton {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  outline: none;
+
+  height: 36px;
+  width: 36px;
+}
+
+.menuIcon {
+  width: 100%;
+  height: auto;
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 100%;
+  width: 33%;
+
+  background: rgba(17, 24, 39, 0.95);
+  z-index: 50;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 32px;
+}
+
+.mobileCloseButton {
+  align-self: flex-end;
+  margin-bottom: 32px;
+
+  background: transparent;
+  border: 0;
+  color: white;
+
+  font-size: 24px;
+  cursor: pointer;
+  outline: none;
+}
+
+.mobileNavList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  margin-top: 64px;
+  white-space: nowrap;
+
+  color: white;
+  font-size: 18px;
+}
+
+.mobileNavLink {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.mobileNavLink:hover {
+  color: #93c5fd;
+}
+
+.mobileNavButton {
+  background: transparent;
+  border: 0;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  transition: color 0.2s ease-in-out;
+}
+
+.mobileNavButton:hover {
+  color: #93c5fd;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: black;
+  opacity: 0.5;
+  z-index: 40;
+}
+
+.languageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  width: 100%;
+  gap: 16px;
+}
+
+.languageSelect {
+  background: transparent;
+  color: white;
+
+  border: 1px solid #6b7280;
+  padding: 4px 8px;
+  border-radius: 6px;
+
+  cursor: pointer;
+  outline: none;
+  font-size: 0.875rem;
+
+  transition: border-color 0.2s ease-in-out;
+}
+
+.languageSelect:hover {
+  border-color: #93c5fd;
+}
+
+.languageOption {
+  background: black;
+  color: white;
+}
+
+.faqCloseButton {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  margin-bottom: 4px;
+}
+
+/* ======= SEU BLOCO (mantido igual) ======= */
+.faqContainer {
+  background-color: transparent;
+  color: white;
+  padding: 16px;
+  overflow-y: auto;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  transform: translateX(100%);
+  opacity: 0;
+  z-index: 30;
+  position: fixed;
+  top: 10%;
+}
+
+.faqContainer.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.faqContainer.hide {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+@media (max-width: 950px) {
+  .faqContainer {
+    top: 50%;
+    height: 35vh;
+    width: 25%;
+  }
+}
+
+@media (max-width: 650px) {
+  .faqContainer {
+    top: 65%;
+    left: 5%;
+    height: 30vh;
+    width: 50%;
+  }
+}
+
+/* Desktop nav aparece em telas maiores */
+@media (min-width: 640px) {
+  .navDesktop {
+    display: flex;
+  }
+
+  .hamburgerWrapper {
+    display: none;
+  }
+}
