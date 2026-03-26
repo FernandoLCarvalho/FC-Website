@@ -1,5 +1,5 @@
-import MainSection from "@/components/mainSection";
+import MainSection from "@/home/components/MainSection";
 
-export default function Homepage() {
+export default function HomePage() {
   return <MainSection />;
 }

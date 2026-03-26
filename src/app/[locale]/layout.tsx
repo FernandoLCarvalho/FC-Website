@@ -5,9 +5,9 @@ import { routing } from "@/i18n/routing";
 import "../globals.css";
 
 import { LocaleProvider } from "@/context/LocaleContext";
-import LoadingScreen from "@/components/LoadingScreen";
-import NavBar from "./components/navBar";
-import Footer from "./components/footer";
+import LoadingScreen from "@/shell/components/LoadingScreen";
+import NavBar from "@/shell/components/NavBar";
+import Footer from "@/shell/components/Footer";
 
 type Locale = "en" | "es" | "pt";
 

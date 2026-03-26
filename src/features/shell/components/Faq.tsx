@@ -1,5 +1,7 @@
+"use client";
+
 import { useTranslations } from "next-intl";
-import styles from "./styles.module.css";
+import styles from "./faq.module.css";
 
 export default function Faq() {
   const t = useTranslations();

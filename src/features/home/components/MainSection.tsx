@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import localStyles from "./styles.module.css";
+import localStyles from "./main-section.module.css";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { SectionHeading } from "@/components/atoms/SectionHeading/SectionHeading";
 
-const Scene = dynamic(() => import("@/scenes/Scene"));
+const Scene = dynamic(() => import("@/three/components/Scene"));
 
 export default function MainSection() {
   const t = useTranslations();
@@ -21,7 +22,9 @@ export default function MainSection() {
   return (
     <section className={localStyles.section}>
       <article className={localStyles.article}>
-        <p className={localStyles.paragragh}>{t("BUILDING_SOLUCTIONS")}</p>
+        <SectionHeading as="h1" className={localStyles.paragragh}>
+          {t("BUILDING_SOLUCTIONS")}
+        </SectionHeading>
 
         <button className={localStyles.button} onClick={handleWhatsAppRedirect}>
           <span>{t("QUOTE")}</span>

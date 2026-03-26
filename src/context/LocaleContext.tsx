@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 
 type Locale = "en" | "pt" | "es";
 
-interface LocaleContextProps {
+interface ILocaleContextProps {
   locale: Locale;
 }
 
-const LocaleContext = createContext<LocaleContextProps | undefined>(undefined);
+const LocaleContext = createContext<ILocaleContextProps | undefined>(undefined);
 
 export const LocaleProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -24,7 +24,7 @@ export const LocaleProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useLocale = (): LocaleContextProps => {
+export const useLocale = (): ILocaleContextProps => {
   const context = useContext(LocaleContext);
   if (!context) {
     throw new Error("useLocale must be used within a LocaleProvider");

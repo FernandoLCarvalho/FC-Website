@@ -3,20 +3,21 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 
 import { useLocale } from "@/context/LocaleContext";
 import { Toast } from "primereact/toast";
-import Faq from "../Feature/Faq";
+import Faq from "@/shell/components/Faq";
+import { useNavHeaderHeight } from "@/shell/hooks/useNavHeaderHeight";
 
-interface MenuItems {
+interface IMenuItems {
   label: string;
   url?: string;
 }
 
 export default function NavBar() {
-  const headerRef = useRef<HTMLElement>(null);
+  const headerRef = useNavHeaderHeight();
   const [isOpen, setIsOpen] = useState(false);
   const [isFAQOpen, setIsFAQOpen] = useState(false);
   const t = useTranslations();
@@ -57,35 +58,14 @@ export default function NavBar() {
     router.push(pathname, { locale: newLocale });
   };
 
-  const menuItems: MenuItems[] = [
+  const menuItems: IMenuItems[] = [
     { label: t("HOME"), url: "/" },
     { label: t("ABOUT"), url: "/about" },
     { label: "FAQ" },
   ];
 
-  useLayoutEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
-
-    const set = () => {
-      const h = el.getBoundingClientRect().height;
-      document.documentElement.style.setProperty("--nav-h", `${h}px`);
-    };
-
-    set();
-
-    const ro = new ResizeObserver(set);
-    ro.observe(el);
-
-    window.addEventListener("resize", set);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", set);
-    };
-  }, []);
-
   return (
-    <header className={styles.header}>
+    <header ref={headerRef} className={styles.header}>
       <Toast ref={toast} />
 
       <div className={styles.logoWrapper}>
