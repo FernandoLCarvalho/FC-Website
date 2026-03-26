@@ -11,7 +11,7 @@ export default async function AboutView() {
       <h1 className={styles.title}>{t("ABOUT")}</h1>
 
       <Image
-        src={"/Me.png"}
+        src={"/me.png"}
         alt="Fernando Carvalho"
         width={200}
         height={300}
