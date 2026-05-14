@@ -1,0 +1,152 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100vh - var(--nav-h) - var(--footer-h));
+  flex: 1;
+  padding: 72px 24px 80px;
+  background:
+    radial-gradient(circle at 50% 220px, rgba(255, 255, 255, 0.08), transparent 280px),
+    linear-gradient(to bottom, #050505 0%, #171717 45%, #353535 100%);
+  color: white;
+}
+
+.profileSection {
+  display: flex;
+  width: min(100%, 880px);
+  align-items: center;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0 0 24px;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.avatar {
+  width: 180px;
+  height: 270px;
+  margin-bottom: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.description {
+  max-width: 720px;
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.techGrid {
+  display: grid;
+  width: min(100%, 680px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 48px;
+}
+
+.techCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 128px;
+  padding: 18px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(10px);
+}
+
+.techIcon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 18px;
+  object-fit: contain;
+}
+
+.techBadge {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 18px;
+  place-items: center;
+  border-radius: 8px;
+  background: #e5e7eb;
+  color: #111827;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.techName {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.mapSection {
+  width: min(100%, 680px);
+  margin-top: 72px;
+  text-align: center;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.map {
+  width: min(100%, 520px);
+  height: 320px;
+  margin-top: 24px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.38);
+}
+
+.locationFallback {
+  margin: 18px auto 0;
+  color: #d1d5db;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+  .container {
+    padding: 48px 18px 64px;
+  }
+
+  .avatar {
+    width: 156px;
+    height: 234px;
+  }
+
+  .techGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .techCard {
+    min-height: 104px;
+  }
+
+  .mapSection {
+    margin-top: 56px;
+  }
+
+  .map {
+    height: 260px;
+  }
+}

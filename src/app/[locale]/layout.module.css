@@ -1,0 +1,14 @@
+.body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shellLayer {
+  z-index: 2;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+}

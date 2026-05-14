@@ -208,7 +208,6 @@
   margin-bottom: 4px;
 }
 
-/* ======= SEU BLOCO (mantido igual) ======= */
 .faqContainer {
   background-color: transparent;
   color: white;
@@ -222,16 +221,22 @@
   z-index: 30;
   position: fixed;
   top: 10%;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .faqContainer.show {
   transform: translateX(0);
   opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
 }
 
 .faqContainer.hide {
   transform: translateX(100%);
   opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 @media (max-width: 950px) {
@@ -251,7 +256,6 @@
   }
 }
 
-/* Desktop nav aparece em telas maiores */
 @media (min-width: 640px) {
   .navDesktop {
     display: flex;

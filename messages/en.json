@@ -10,5 +10,6 @@
   "WHATSAPP_CONTACT": "Hello, I'm interested in discussing a job opportunity with you. Could we talk?",
   "DESCRIPTION": "Frontend Developer with over 2 years of hands-on experience focused on modern interfaces, performance and clean architecture.",
   "CURRENTLY": "Currently living next to:",
-  "FAQ_02": "This website is constructed by using Next.js, Tailwind CSS and React Three Fiber"
+  "LOCATION": "Goiania, Brazil",
+  "FAQ_02": "This website is built with Next.js, CSS Modules and React Three Fiber"
 }
