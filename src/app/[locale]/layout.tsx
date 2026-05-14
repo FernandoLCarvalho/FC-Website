@@ -64,7 +64,7 @@ export default async function LocaleLayout({
       </head>
       <body className={styles.body}>
         <SessionIntro />
-        <LocaleProvider>
+        <LocaleProvider locale={locale as Locale}>
           <NextIntlClientProvider messages={messages}>
             <div className={styles.shellLayer}>
               <NavBar />

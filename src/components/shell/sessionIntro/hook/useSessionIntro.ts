@@ -5,12 +5,8 @@ import { useEffect, useRef, useState } from "react";
 const STORAGE_KEY = "fc_intro_seen";
 
 export function useSessionIntro() {
-  const [hasSeen, setHasSeen] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return sessionStorage.getItem(STORAGE_KEY) === "1";
-  });
-
-  const [visible, setVisible] = useState(!hasSeen);
+  const [hasSeen, setHasSeen] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [isBlue, setIsBlue] = useState(false);
   const [fadePortfolio, setFadePortfolio] = useState(false);
   const [fadeFernando, setFadeFernando] = useState(false);
@@ -19,6 +15,12 @@ export function useSessionIntro() {
   const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
+    if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+      setHasSeen(true);
+      setVisible(false);
+      return;
+    }
+
     if (hasSeen) return;
 
     setVisible(true);

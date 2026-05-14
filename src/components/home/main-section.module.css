@@ -1,24 +1,5 @@
-.button {
-  position: relative;
-  padding: 10px 20px;
-  color: white;
-  background-color: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10%;
-  font-family: "Roboto", sans-serif;
-  font-size: 0.8rem;
-  margin-top: 15%;
-  font-weight: bold;
-  text-transform: uppercase;
-  overflow: hidden;
-  white-space: nowrap;
-  pointer-events: auto;
-}
-
 .section {
+  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
@@ -42,24 +23,29 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+  pointer-events: auto;
 }
 
 .button {
   position: relative;
-  padding: 10px 20px;
+  min-height: 54px;
+  padding: 0 28px;
   color: white;
+  border: 0;
   background-color: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10%;
+  gap: 12px;
   font-family: "Roboto", sans-serif;
-  font-size: 0.8rem;
-  margin-top: 15%;
+  font-size: 1rem;
+  margin-top: clamp(36px, 8vh, 84px);
   font-weight: bold;
   text-transform: uppercase;
   overflow: hidden;
+  white-space: nowrap;
+  pointer-events: auto;
 }
 
 .button::before,
@@ -116,33 +102,64 @@
   height: 100%;
 }
 
+.button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 4px;
+}
+
 .paragragh {
   text-align: center;
   z-index: 50;
-  font-size: 1.2rem;
-  margin-bottom: 20%;
-}
-.button {
-  font-size: 1.1rem;
+  max-width: 1120px;
+  margin: 0;
+  color: #ededed;
+  font-size: 1rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
 }
 
-@media (min-width: 900px) {
-  .paragragh {
-    font-size: 2rem;
+.shineLetter {
+  display: inline-block;
+  color: #ededed;
+  animation: letterBlueShine 5s linear infinite;
+  animation-delay: calc(var(--shine-index) * 30ms);
+}
+
+@keyframes letterBlueShine {
+  0%,
+  5%,
+  100% {
+    color: #ededed;
+    text-shadow: none;
   }
 
-  .button {
-    font-size: 1rem;
+  1% {
+    color: #38bdf8;
+    text-shadow:
+      0 0 8px rgba(56, 189, 248, 0.85),
+      0 0 18px rgba(147, 197, 253, 0.42);
   }
 }
 
 @media (min-width: 500px) {
   .paragragh {
-    font-size: 1rem;
-    margin-bottom: 0%;
+    font-size: 1.15rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .paragragh {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .article {
+    margin: 0 24px;
   }
 
   .button {
-    font-size: 1rem;
+    min-height: 50px;
+    padding: 0 22px;
   }
 }

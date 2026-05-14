@@ -1,13 +1,9 @@
+# syntax=docker/dockerfile:1.7
+
 FROM node:22-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install --force
-
-COPY . .
-
 EXPOSE 3001
 
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npm install --no-audit --fund=false --progress=false && npm run dev"]
