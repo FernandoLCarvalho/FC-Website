@@ -19,7 +19,7 @@ export default function Model() {
     if (actions["Global Rotation"]) {
       actions["Global Rotation"].play();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- run once on mount
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <group ref={group} scale={[1, 1, 1]}>

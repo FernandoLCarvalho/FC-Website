@@ -2,12 +2,14 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import "../globals.css";
+
+import "../../styles/globals.css";
+import styles from "./layout.module.css";
 
 import { LocaleProvider } from "@/context/LocaleContext";
-import LoadingScreen from "@/shell/components/LoadingScreen";
-import NavBar from "@/shell/components/NavBar";
-import Footer from "@/shell/components/Footer";
+import SessionIntro from "@components/shell/sessionIntro";
+import NavBar from "@components/shell/navBar";
+import Footer from "@components/shell/footer";
 
 type Locale = "en" | "es" | "pt";
 
@@ -60,15 +62,15 @@ export default async function LocaleLayout({
           sizes="1563x1563"
         />
       </head>
-      <body className="min-h-screen flex flex-col">
-        <LoadingScreen />
+      <body className={styles.body}>
+        <SessionIntro />
         <LocaleProvider>
           <NextIntlClientProvider messages={messages}>
-            <div className="z-2">
+            <div className={styles.shellLayer}>
               <NavBar />
             </div>
-            <main className="flex-1 flex">{children}</main>
-            <div className="z-2">
+            <main className={styles.main}>{children}</main>
+            <div className={styles.shellLayer}>
               <Footer />
             </div>
           </NextIntlClientProvider>

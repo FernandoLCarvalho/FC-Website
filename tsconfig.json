@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "baseUrl": ".",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -21,11 +20,7 @@
     ],
     "paths": {
       "@/app/*": ["./src/app/*"],
-      "@/shell/*": ["./src/features/shell/*"],
-      "@/home/*": ["./src/features/home/*"],
-      "@/about/*": ["./src/features/about/*"],
-      "@/three/*": ["./src/features/three/*"],
-      "@/features/*": ["./src/features/*"],
+      "@components/*": ["./src/components/*"],
       "@/i18n/*": ["./src/i18n/*"],
       "@/context/*": ["./src/context/*"],
       "@/constants/*": ["./src/constants/*"],

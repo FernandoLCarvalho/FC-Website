@@ -72,7 +72,6 @@
   transition: all 1s ease-in-out;
 }
 
-/* Top border */
 .button::before {
   height: 2px;
   width: 0;
@@ -80,7 +79,6 @@
   left: 0;
 }
 
-/* Right border */
 .button::after {
   width: 2px;
   height: 0;
@@ -88,7 +86,6 @@
   right: 0;
 }
 
-/* Bottom border */
 .button span::before {
   height: 2px;
   width: 0;
@@ -96,7 +93,6 @@
   right: 0;
 }
 
-/* Left border */
 .button span::after {
   width: 2px;
   height: 0;

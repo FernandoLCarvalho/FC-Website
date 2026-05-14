@@ -5,7 +5,7 @@ import localStyles from "./main-section.module.css";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-const Scene = dynamic(() => import("@/three/components/Scene"));
+const Scene = dynamic(() => import("@components/three/Scene"));
 
 export default function MainSection() {
   const t = useTranslations();

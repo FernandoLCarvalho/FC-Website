@@ -8,8 +8,8 @@ import styles from "./styles.module.css";
 
 import { useLocale } from "@/context/LocaleContext";
 import { Toast } from "primereact/toast";
-import Faq from "@/shell/components/Faq";
-import { useNavHeaderHeight } from "@/shell/hooks/useNavHeaderHeight";
+import Faq from "@components/shell/faq";
+import { useNavHeaderHeight } from "./hook/useNavHeaderHeight";
 
 interface IMenuItems {
   label: string;

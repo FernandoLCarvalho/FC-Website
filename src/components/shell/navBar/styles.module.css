@@ -208,7 +208,6 @@
   margin-bottom: 4px;
 }
 
-/* ======= SEU BLOCO (mantido igual) ======= */
 .faqContainer {
   background-color: transparent;
   color: white;
@@ -251,7 +250,6 @@
   }
 }
 
-/* Desktop nav aparece em telas maiores */
 @media (min-width: 640px) {
   .navDesktop {
     display: flex;
