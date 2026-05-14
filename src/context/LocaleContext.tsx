@@ -1,22 +1,24 @@
 "use client";
 
 import React, { createContext, useContext } from "react";
-import { usePathname } from "next/navigation";
 
 type Locale = "en" | "pt" | "es";
 
-interface ILocaleContextProps {
+interface ILocaleContext {
   locale: Locale;
 }
 
-const LocaleContext = createContext<ILocaleContextProps | undefined>(undefined);
+const LocaleContext = createContext<ILocaleContext | undefined>(undefined);
 
-export const LocaleProvider: React.FC<{ children: React.ReactNode }> = ({
+interface ILocaleProviderProps {
+  children: React.ReactNode;
+  locale: Locale;
+}
+
+export const LocaleProvider: React.FC<ILocaleProviderProps> = ({
   children,
+  locale,
 }) => {
-  const pathname = usePathname();
-  const locale = pathname.split("/")[1] as Locale;
-
   return (
     <LocaleContext.Provider value={{ locale }}>
       {children}
@@ -24,7 +26,7 @@ export const LocaleProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useLocale = (): ILocaleContextProps => {
+export const useLocale = (): ILocaleContext => {
   const context = useContext(LocaleContext);
   if (!context) {
     throw new Error("useLocale must be used within a LocaleProvider");
