@@ -1,0 +1,36 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#050505"/>
+  <rect width="1200" height="630" fill="url(#background)"/>
+
+  <circle cx="1018" cy="132" r="220" fill="#0EA5E9" fill-opacity="0.08"/>
+  <circle cx="206" cy="540" r="240" fill="#2563EB" fill-opacity="0.07"/>
+
+  <rect x="72" y="72" width="1056" height="486" rx="18" fill="#070B12" fill-opacity="0.86"/>
+  <rect x="72.5" y="72.5" width="1055" height="485" rx="17.5" stroke="#263244"/>
+
+  <text x="116" y="158" fill="#93C5FD" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">SOFTWARE ENGINEER</text>
+  <text x="116" y="272" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="700">Fernando Carvalho</text>
+  <text x="120" y="338" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="600">Frontend-leaning full-stack</text>
+
+  <rect x="116" y="390" width="164" height="48" rx="24" fill="#0F172A" stroke="#334155"/>
+  <text x="144" y="422" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">React/Next.js</text>
+
+  <rect x="296" y="390" width="176" height="48" rx="24" fill="#0F172A" stroke="#334155"/>
+  <text x="324" y="422" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">API integration</text>
+
+  <rect x="488" y="390" width="282" height="48" rx="24" fill="#0F172A" stroke="#334155"/>
+  <text x="516" y="422" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Spec-Driven AI Workflows</text>
+
+  <text x="120" y="500" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="600">Product interfaces with clear architecture, constraints and validation.</text>
+
+  <rect x="924" y="186" width="128" height="128" rx="28" fill="#0F172A" stroke="#1E3A8A"/>
+  <text x="957" y="270" fill="#38BDF8" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="700">FC</text>
+
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617"/>
+      <stop offset="0.58" stop-color="#07111F"/>
+      <stop offset="1" stop-color="#06202A"/>
+    </linearGradient>
+  </defs>
+</svg>
