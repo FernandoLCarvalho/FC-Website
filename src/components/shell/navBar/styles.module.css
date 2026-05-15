@@ -200,7 +200,7 @@
   color: white;
 }
 
-.faqCloseButton {
+.assetCreditsCloseButton {
   background: transparent;
   border: 0;
   cursor: pointer;
@@ -208,14 +208,15 @@
   margin-bottom: 4px;
 }
 
-.faqContainer {
+.assetCreditsPanel {
   background-color: transparent;
   color: white;
   padding: 16px;
   overflow-y: auto;
   transition:
     opacity 0.4s ease,
-    transform 0.4s ease;
+    transform 0.4s ease,
+    visibility 0s linear 0.4s;
   transform: translateX(100%);
   opacity: 0;
   z-index: 30;
@@ -225,14 +226,18 @@
   visibility: hidden;
 }
 
-.faqContainer.show {
+.assetCreditsPanel.show {
   transform: translateX(0);
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    visibility 0s;
 }
 
-.faqContainer.hide {
+.assetCreditsPanel.hide {
   transform: translateX(100%);
   opacity: 0;
   pointer-events: none;
@@ -240,7 +245,7 @@
 }
 
 @media (max-width: 950px) {
-  .faqContainer {
+  .assetCreditsPanel {
     top: 50%;
     height: 35vh;
     width: 25%;
@@ -248,7 +253,7 @@
 }
 
 @media (max-width: 650px) {
-  .faqContainer {
+  .assetCreditsPanel {
     top: 65%;
     left: 5%;
     height: 30vh;

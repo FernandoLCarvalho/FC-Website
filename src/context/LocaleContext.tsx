@@ -1,35 +1,31 @@
 "use client";
 
-import React, { createContext, useContext } from "react";
+import { createContext, type ReactNode, useContext } from "react";
+import type { Locale } from "@/utils/i18n/locale";
 
-type Locale = "en" | "pt" | "es";
-
-interface ILocaleContext {
+interface ILocaleContextValue {
   locale: Locale;
 }
 
-const LocaleContext = createContext<ILocaleContext | undefined>(undefined);
-
-interface ILocaleProviderProps {
-  children: React.ReactNode;
+interface ILocaleProvider {
+  children: ReactNode;
   locale: Locale;
 }
 
-export const LocaleProvider: React.FC<ILocaleProviderProps> = ({
-  children,
-  locale,
-}) => {
-  return (
-    <LocaleContext.Provider value={{ locale }}>
-      {children}
-    </LocaleContext.Provider>
-  );
-};
+const LocaleContext = createContext<ILocaleContextValue | undefined>(undefined);
 
-export const useLocale = (): ILocaleContext => {
+export function useLocale(): ILocaleContextValue {
   const context = useContext(LocaleContext);
   if (!context) {
     throw new Error("useLocale must be used within a LocaleProvider");
   }
   return context;
-};
+}
+
+export function LocaleProvider({ children, locale }: ILocaleProvider) {
+  return (
+    <LocaleContext.Provider value={{ locale }}>
+      {children}
+    </LocaleContext.Provider>
+  );
+}
