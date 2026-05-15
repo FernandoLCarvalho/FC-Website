@@ -40,11 +40,16 @@
 
 .title {
   z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.34em;
+  row-gap: 0.02em;
+  justify-content: center;
   max-width: 100%;
   margin: 0;
   color: #ededed;
   font-family: "Roboto Mono", monospace;
-  font-size: 2.6rem;
+  font-size: clamp(2.35rem, 10vw, 3rem);
   font-weight: 700;
   line-height: 1.05;
 }
@@ -124,8 +129,16 @@
   transform: none;
 }
 
+.shineWord,
 .shineLetter {
   display: inline-block;
+}
+
+.shineWord {
+  white-space: nowrap;
+}
+
+.shineLetter {
   color: #ededed;
   animation: letterBlueShine 5s linear infinite;
   animation-delay: calc(var(--shine-index) * 30ms);
@@ -149,7 +162,7 @@
 
 @media (min-width: 500px) {
   .title {
-    font-size: 3.6rem;
+    font-size: clamp(3.2rem, 8vw, 4.2rem);
   }
 
   .paragraph {
@@ -175,20 +188,35 @@
 
 @media (max-width: 720px) {
   .article {
-    margin: 0 24px;
+    margin: 0 22px;
   }
 
   .role {
     font-size: 0.78rem;
   }
 
+  .paragraph {
+    margin-top: 24px;
+    font-size: 1rem;
+  }
+
+  .credential {
+    font-size: 0.92rem;
+  }
+
   .contactActions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
+    max-width: 420px;
+    margin-top: 32px;
   }
 
   .contactButton {
+    width: 100%;
     min-height: 42px;
-    padding: 0 14px;
-    font-size: 0.82rem;
+    min-width: 0;
+    padding: 0 10px;
+    font-size: 0.8rem;
   }
 }

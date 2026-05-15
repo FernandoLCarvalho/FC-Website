@@ -93,78 +93,172 @@
   top: 0;
   left: 0;
 
-  height: 100%;
-  width: 33%;
+  height: 100vh;
+  width: min(74vw, 320px);
 
-  background: rgba(17, 24, 39, 0.95);
-  z-index: 50;
+  background: rgba(5, 10, 18, 0.97);
+  border-right: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 24px 0 48px rgba(0, 0, 0, 0.36);
+  z-index: 60;
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
 
-  padding: 32px;
+  padding: 28px 22px;
+  will-change: transform;
+}
+
+.mobileMenuOpen {
+  animation: mobileMenuSlideIn 220ms ease-out forwards;
+}
+
+.mobileMenuClosed {
+  animation: mobileMenuSlideOut 200ms ease-in forwards;
 }
 
 .mobileCloseButton {
   align-self: flex-end;
-  margin-bottom: 32px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 28px;
+  place-items: center;
 
   background: transparent;
-  border: 0;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 8px;
   color: white;
 
   font-size: 24px;
+  line-height: 1;
   cursor: pointer;
   outline: none;
+}
+
+.mobileNav {
+  width: 100%;
 }
 
 .mobileNavList {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
 
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 2px;
 
-  margin-top: 64px;
-  white-space: nowrap;
+  margin-top: 32px;
 
-  color: white;
-  font-size: 18px;
+  color: #e2e8f0;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.96rem;
+  font-weight: 700;
 }
 
-.mobileNavLink {
-  color: white;
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
+.mobileNavItem {
+  width: 100%;
 }
 
-.mobileNavLink:hover {
-  color: #93c5fd;
-}
-
+.mobileNavLink,
 .mobileNavButton {
-  background: transparent;
+  display: flex;
+  min-height: 46px;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 0 10px;
   border: 0;
-  color: white;
-  cursor: pointer;
-  padding: 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0;
+  background: transparent;
+  color: #e2e8f0;
   font: inherit;
-  transition: color 0.2s ease-in-out;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease-in-out,
+    background 0.2s ease-in-out,
+    color 0.2s ease-in-out;
 }
 
+.mobileNavLink::before,
+.mobileNavButton::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  flex: 0 0 auto;
+  opacity: 0.5;
+  transform: rotate(45deg);
+}
+
+.mobileNavLink:hover,
 .mobileNavButton:hover {
+  border-color: rgba(147, 197, 253, 0.3);
+  background: rgba(30, 41, 59, 0.34);
   color: #93c5fd;
 }
 
 .backdrop {
   position: fixed;
   inset: 0;
-  background: black;
-  opacity: 0.5;
-  z-index: 40;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(3px);
+  z-index: 55;
+  will-change: opacity;
+}
+
+.backdropOpen {
+  animation: backdropFadeIn 220ms ease-out forwards;
+}
+
+.backdropClosed {
+  animation: backdropFadeOut 200ms ease-in forwards;
+}
+
+@keyframes mobileMenuSlideIn {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes mobileMenuSlideOut {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 .languageWrapper {
@@ -201,15 +295,21 @@
 }
 
 .assetCreditsCloseButton {
-  background: transparent;
-  border: 0;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 8px;
   cursor: pointer;
   color: white;
   margin-bottom: 4px;
+  width: 32px;
+  height: 32px;
 }
 
 .assetCreditsPanel {
-  background-color: transparent;
+  background: rgba(5, 10, 18, 0.94);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 8px;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.42);
   color: white;
   padding: 16px;
   overflow-y: auto;
@@ -221,7 +321,10 @@
   opacity: 0;
   z-index: 30;
   position: fixed;
-  top: 10%;
+  top: calc(var(--nav-h) + 16px);
+  right: 24px;
+  width: min(360px, calc(100vw - 48px));
+  max-height: calc(100vh - var(--nav-h) - 32px);
   pointer-events: none;
   visibility: hidden;
 }
@@ -244,20 +347,22 @@
   visibility: hidden;
 }
 
-@media (max-width: 950px) {
+@media (max-width: 720px) {
   .assetCreditsPanel {
-    top: 50%;
-    height: 35vh;
-    width: 25%;
+    top: calc(var(--nav-h) + 12px);
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-height: 300px;
+    transform: translateY(-12px);
   }
-}
 
-@media (max-width: 650px) {
-  .assetCreditsPanel {
-    top: 65%;
-    left: 5%;
-    height: 30vh;
-    width: 50%;
+  .assetCreditsPanel.show {
+    transform: translateY(0);
+  }
+
+  .assetCreditsPanel.hide {
+    transform: translateY(-12px);
   }
 }
 
