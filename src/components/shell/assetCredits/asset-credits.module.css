@@ -1,12 +1,6 @@
 .section {
-  height: 50%;
+  height: auto;
   width: 100%;
-}
-
-@media (min-width: 1024px) {
-  .section {
-    width: 50%;
-  }
 }
 
 .block {

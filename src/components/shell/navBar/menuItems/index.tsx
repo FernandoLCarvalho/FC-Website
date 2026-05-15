@@ -1,12 +1,16 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import styles from "../styles.module.css";
+
+const MOBILE_MENU_ANIMATION_MS = 220;
 
 export interface NavMenuItem {
   id: string;
   label: string;
   href?: string;
   onClick?: () => void;
+  visibleOnMobile?: boolean;
 }
 
 interface MenuItemsProps {
@@ -22,6 +26,33 @@ export default function MenuItems({
   onClosePanel,
   onToggleMobileMenu,
 }: MenuItemsProps) {
+  const [shouldRenderMobileMenu, setShouldRenderMobileMenu] =
+    useState(isMobileMenuOpen);
+  const mobileItems = items.filter((item) => item.visibleOnMobile !== false);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      setShouldRenderMobileMenu(true);
+      return;
+    }
+
+    const animationTimer = window.setTimeout(() => {
+      setShouldRenderMobileMenu(false);
+    }, MOBILE_MENU_ANIMATION_MS);
+
+    return () => window.clearTimeout(animationTimer);
+  }, [isMobileMenuOpen]);
+
+  const handleMobileLinkClick = () => {
+    onClosePanel();
+    onToggleMobileMenu();
+  };
+
+  const handleMobileButtonClick = (onClick?: () => void) => {
+    onClick?.();
+    onToggleMobileMenu();
+  };
+
   return (
     <>
       <nav className={styles.navDesktop}>
@@ -37,7 +68,11 @@ export default function MenuItems({
                   {item.label}
                 </Link>
               ) : (
-                <button onClick={item.onClick} className={styles.navItemButton}>
+                <button
+                  data-nav-item-id={item.id}
+                  onClick={item.onClick}
+                  className={styles.navItemButton}
+                >
                   {item.label}
                 </button>
               )}
@@ -58,8 +93,12 @@ export default function MenuItems({
         </button>
       </div>
 
-      {isMobileMenuOpen && (
-        <div className={styles.mobileMenu}>
+      {shouldRenderMobileMenu && (
+        <div
+          className={`${styles.mobileMenu} ${
+            isMobileMenuOpen ? styles.mobileMenuOpen : styles.mobileMenuClosed
+          }`}
+        >
           <button
             onClick={onToggleMobileMenu}
             className={styles.mobileCloseButton}
@@ -67,21 +106,22 @@ export default function MenuItems({
             &times;
           </button>
 
-          <nav>
+          <nav className={styles.mobileNav}>
             <ul className={styles.mobileNavList}>
-              {items.map((item) => (
-                <li key={item.id}>
+              {mobileItems.map((item) => (
+                <li key={item.id} className={styles.mobileNavItem}>
                   {item.href ? (
                     <Link
                       href={item.href}
                       className={styles.mobileNavLink}
-                      onClick={onToggleMobileMenu}
+                      onClick={handleMobileLinkClick}
                     >
                       {item.label}
                     </Link>
                   ) : (
                     <button
-                      onClick={item.onClick}
+                      data-nav-item-id={item.id}
+                      onClick={() => handleMobileButtonClick(item.onClick)}
                       className={styles.mobileNavButton}
                     >
                       {item.label}
@@ -94,8 +134,13 @@ export default function MenuItems({
         </div>
       )}
 
-      {isMobileMenuOpen && (
-        <div className={styles.backdrop} onClick={onToggleMobileMenu} />
+      {shouldRenderMobileMenu && (
+        <div
+          className={`${styles.backdrop} ${
+            isMobileMenuOpen ? styles.backdropOpen : styles.backdropClosed
+          }`}
+          onClick={onToggleMobileMenu}
+        />
       )}
     </>
   );

@@ -9,7 +9,6 @@ import { contact } from "@/constants/contact";
 const StarClusterScene = dynamic(
   () => import("@components/three/starClusterScene"),
 );
-const NON_BREAKING_SPACE = "\u00A0";
 
 function buildWhatsAppContactUrl(message: string) {
   const phoneNumber = contact.whatsAppPhoneNumber;
@@ -25,6 +24,7 @@ function mailToContactUrl(email: string, subject: string) {
 export default function MainSection() {
   const t = useTranslations();
   const homeName = t("HOME_NAME");
+  const homeNameWords = homeName.split(" ");
   const whatsAppContactUrl = buildWhatsAppContactUrl(t("WHATSAPP_CONTACT"));
   const contactOptions = [
     {
@@ -89,14 +89,29 @@ export default function MainSection() {
         <p className={localStyles.role}>{t("HOME_ROLE")}</p>
 
         <h1 className={localStyles.title} aria-label={homeName}>
-          {Array.from(homeName).map((character, index) => (
+          {homeNameWords.map((word, wordIndex) => (
             <span
-              key={`${character}-${index}`}
+              key={`${word}-${wordIndex}`}
               aria-hidden="true"
-              className={localStyles.shineLetter}
-              style={{ "--shine-index": index } as CSSProperties}
+              className={localStyles.shineWord}
             >
-              {character === " " ? NON_BREAKING_SPACE : character}
+              {Array.from(word).map((character, characterIndex) => {
+                const previousWordsLength = homeNameWords
+                  .slice(0, wordIndex)
+                  .join("").length;
+                const shineIndex =
+                  previousWordsLength + wordIndex + characterIndex;
+
+                return (
+                  <span
+                    key={`${word}-${character}-${characterIndex}`}
+                    className={localStyles.shineLetter}
+                    style={{ "--shine-index": shineIndex } as CSSProperties}
+                  >
+                    {character}
+                  </span>
+                );
+              })}
             </span>
           ))}
         </h1>
