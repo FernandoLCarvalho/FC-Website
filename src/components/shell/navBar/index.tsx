@@ -1,36 +1,37 @@
 "use client";
 
-import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link, usePathname, useRouter } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 
 import { useLocale } from "@/context/LocaleContext";
+import type { Locale } from "@/utils/i18n/locale";
 import { Toast } from "primereact/toast";
-import Faq from "@components/shell/faq";
-import { useNavHeaderHeight } from "./hook/useNavHeaderHeight";
+import AssetCredits from "@components/shell/assetCredits";
+import { useNavHeaderHeightCssVariable } from "./hook/useNavHeaderHeightCssVariable";
+import LanguageModifier from "./languageModifier";
+import NavBarLogo from "./logo";
+import MenuItems, { type NavMenuItem } from "./menuItems";
 
-interface IMenuItems {
-  label: string;
-  url?: string;
+function isHomePath(pathname: string) {
+  return pathname === "/";
 }
 
 export default function NavBar() {
-  const headerRef = useNavHeaderHeight();
+  const headerRef = useNavHeaderHeightCssVariable();
   const [isOpen, setIsOpen] = useState(false);
-  const [isFAQOpen, setIsFAQOpen] = useState(false);
+  const [isAssetCreditsOpen, setIsAssetCreditsOpen] = useState(false);
   const t = useTranslations();
   const toast = useRef<Toast>(null);
   const router = useRouter();
   const pathname = usePathname();
 
-  type Locale = "en" | "pt" | "es";
   const { locale } = useLocale();
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
-  const show = (phrase: string) => {
+  const showToast = (phrase: string) => {
     toast.current?.show({
       severity: "warn",
       summary: t("WARN"),
@@ -39,143 +40,62 @@ export default function NavBar() {
     });
   };
 
-  const openFAQ = () => {
-    const isHomePage = window.location.pathname.split("/").slice(2).join("");
-
-    if (isHomePage === "") {
-      setIsFAQOpen((prev) => !prev);
-    } else {
-      show(t("FAQ"));
-      setIsFAQOpen(false);
+  const toggleAssetCredits = () => {
+    if (isHomePath(pathname)) {
+      setIsAssetCreditsOpen((prev) => !prev);
+      return;
     }
+
+    showToast(t("ASSET_CREDITS_HOME_ONLY"));
+    setIsAssetCreditsOpen(false);
   };
 
   useEffect(() => {
-    setIsFAQOpen(false);
+    setIsAssetCreditsOpen(false);
   }, [pathname]);
 
   const handleLocaleChange = (newLocale: Locale) => {
     router.push(pathname, { locale: newLocale });
   };
 
-  const menuItems: IMenuItems[] = [
-    { label: t("HOME"), url: "/" },
-    { label: t("ABOUT"), url: "/about" },
-    { label: "FAQ" },
+  const menuItems: NavMenuItem[] = [
+    { id: "home", label: t("HOME"), href: "/" },
+    { id: "about", label: t("ABOUT"), href: "/about" },
+    {
+      id: "assetCredits",
+      label: t("ASSET_CREDITS"),
+      onClick: toggleAssetCredits,
+    },
   ];
 
   return (
     <header ref={headerRef} className={styles.header}>
       <Toast ref={toast} />
 
-      <div className={styles.logoWrapper}>
-        <Image
-          src="/Logo.svg"
-          alt="Logo"
-          width={50}
-          height={50}
-          className={styles.logo}
-          loading="lazy"
-        />
-      </div>
+      <NavBarLogo />
 
-      <nav className={styles.navDesktop}>
-        <ul className={styles.navList}>
-          {menuItems.map((item, index) => (
-            <li key={index}>
-              {item.url ? (
-                <Link
-                  href={item.url}
-                  className={styles.navItemLink}
-                  onClick={() => setIsFAQOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <button onClick={openFAQ} className={styles.navItemButton}>
-                  {item.label}
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <MenuItems
+        isMobileMenuOpen={isOpen}
+        items={menuItems}
+        onClosePanel={() => setIsAssetCreditsOpen(false)}
+        onToggleMobileMenu={toggleMenu}
+      />
 
-      <div className={styles.hamburgerWrapper}>
-        <button onClick={toggleMenu} className={styles.hamburgerButton}>
-          <Image
-            src="/menu-icon.svg"
-            alt="Menu Icon"
-            width={24}
-            height={24}
-            className={styles.menuIcon}
-          />
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className={styles.mobileMenu}>
-          <button onClick={toggleMenu} className={styles.mobileCloseButton}>
-            &times;
-          </button>
-
-          <nav>
-            <ul className={styles.mobileNavList}>
-              {menuItems.map((item, index) => (
-                <li key={index}>
-                  {item.url ? (
-                    <Link
-                      href={item.url}
-                      className={styles.mobileNavLink}
-                      onClick={toggleMenu}
-                    >
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <button
-                      onClick={openFAQ}
-                      className={styles.mobileNavButton}
-                    >
-                      {item.label}
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      )}
-
-      {isOpen && <div className={styles.backdrop} onClick={toggleMenu} />}
-
-      <div className={styles.languageWrapper}>
-        <select
-          value={locale}
-          onChange={(e) => handleLocaleChange(e.target.value as Locale)}
-          className={styles.languageSelect}
-        >
-          <option value="en" className={styles.languageOption}>
-            EN
-          </option>
-          <option value="pt" className={styles.languageOption}>
-            PT-BR
-          </option>
-          <option value="es" className={styles.languageOption}>
-            ES
-          </option>
-        </select>
-      </div>
+      <LanguageModifier locale={locale} onLocaleChange={handleLocaleChange} />
 
       <div
-        className={`${styles.faqContainer} ${
-          isFAQOpen ? styles.show : styles.hide
+        className={`${styles.assetCreditsPanel} ${
+          isAssetCreditsOpen ? styles.show : styles.hide
         }`}
       >
-        <button onClick={openFAQ} className={styles.faqCloseButton}>
+        <button
+          onClick={toggleAssetCredits}
+          className={styles.assetCreditsCloseButton}
+        >
           &times;
         </button>
 
-        <Faq />
+        <AssetCredits />
       </div>
     </header>
   );

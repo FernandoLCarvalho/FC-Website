@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { isSupportedLocale } from "@/utils/i18n/locale";
 
 import "../../styles/globals.css";
 import styles from "./layout.module.css";
@@ -10,8 +10,6 @@ import { LocaleProvider } from "@/context/LocaleContext";
 import SessionIntro from "@components/shell/sessionIntro";
 import NavBar from "@components/shell/navBar";
 import Footer from "@components/shell/footer";
-
-type Locale = "en" | "es" | "pt";
 
 export const metadata = {
   title: "Fernando Carvalho Portfolio",
@@ -31,14 +29,14 @@ export const metadata = {
 
 export default async function LocaleLayout({
   children,
-  params: asyncParams,
+  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: { locale: string };
 }) {
-  const { locale } = await asyncParams;
+  const { locale } = params;
 
-  if (!routing.locales.includes(locale as Locale)) {
+  if (!isSupportedLocale(locale)) {
     notFound();
   }
 
@@ -64,7 +62,7 @@ export default async function LocaleLayout({
       </head>
       <body className={styles.body}>
         <SessionIntro />
-        <LocaleProvider locale={locale as Locale}>
+        <LocaleProvider locale={locale}>
           <NextIntlClientProvider messages={messages}>
             <div className={styles.shellLayer}>
               <NavBar />

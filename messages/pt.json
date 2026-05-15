@@ -5,11 +5,12 @@
   "SELECT_LANGUAGE": "Selecione a língua",
   "BUILDING_SOLUCTIONS": "Construindo soluções web eficientes e escaláveis para o mundo digital.",
   "QUOTE": "Converse comigo",
-  "FAQ": "Por favor, volte para a página inicial se deseja ver as FAQs.",
+  "ASSET_CREDITS": "Créditos",
+  "ASSET_CREDITS_HOME_ONLY": "Por favor, volte para a página inicial se deseja ver os créditos.",
   "WARN": "Aviso",
   "WHATSAPP_CONTACT": "Olá, estou interessado em discutir uma oportunidade de trabalho com você. Poderíamos conversar?",
   "DESCRIPTION": "Desenvolvedor Front-End especializado em React e Next.js, com foco em arquitetura, performance e organização de código. Gosto de transformar interfaces complexas em sistemas simples de manter.",
   "CURRENTLY": "Atualmente morando perto de:",
   "LOCATION": "Goiania, Brasil",
-  "FAQ_02": "Este site é construído utilizando Next.js, CSS Modules e React Three Fiber"
+  "SITE_TECH_NOTE": "Este site é construído utilizando Next.js, CSS Modules e React Three Fiber"
 }

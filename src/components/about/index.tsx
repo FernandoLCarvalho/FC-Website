@@ -1,11 +1,26 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { Technologies } from "@/constants/technologies";
+import { technologies } from "@/constants/technologies";
 import styles from "./about-view.module.css";
+
+const CURRENT_LOCATION_COORDINATES = "-16.6864,-49.2643";
+const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps/embed/v1/place";
+
+function buildCurrentLocationMapUrl(apiKey: string) {
+  const params = new URLSearchParams({
+    key: apiKey,
+    q: CURRENT_LOCATION_COORDINATES,
+  });
+
+  return `${GOOGLE_MAPS_EMBED_URL}?${params.toString()}`;
+}
 
 export default async function AboutView() {
   const t = await getTranslations();
   const mapsApiKey = process.env.NEXT_PUBLIC_API_KEY;
+  const currentLocationMapUrl = mapsApiKey
+    ? buildCurrentLocationMapUrl(mapsApiKey)
+    : null;
 
   return (
     <div className={styles.container}>
@@ -24,7 +39,7 @@ export default async function AboutView() {
         <p className={styles.description}>{t("DESCRIPTION")}</p>
 
         <div className={styles.techGrid}>
-          {Technologies.map((tech) => (
+          {technologies.map((tech) => (
             <article key={tech.name} className={styles.techCard}>
               {tech.image ? (
                 <Image
@@ -35,7 +50,7 @@ export default async function AboutView() {
                   className={styles.techIcon}
                 />
               ) : (
-                <span className={styles.techBadge}>CSS</span>
+                <span className={styles.techBadge}>{tech.badgeLabel}</span>
               )}
               <h2 className={styles.techName}>{tech.name}</h2>
             </article>
@@ -45,9 +60,9 @@ export default async function AboutView() {
 
       <section className={styles.mapSection}>
         <h2 className={styles.sectionTitle}>{t("CURRENTLY")}</h2>
-        {mapsApiKey ? (
+        {currentLocationMapUrl ? (
           <iframe
-            src={`https://www.google.com/maps/embed/v1/place?key=${mapsApiKey}&q=-16.6864,-49.2643`}
+            src={currentLocationMapUrl}
             className={styles.map}
             title={t("LOCATION")}
             allowFullScreen

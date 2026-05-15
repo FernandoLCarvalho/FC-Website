@@ -2,51 +2,83 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const STORAGE_KEY = "fc_intro_seen";
+const INTRO_STORAGE_KEY = "fc_intro_seen";
+
+const INTRO_TIMINGS_MS = {
+  highlightPortfolio: 500,
+  hidePortfolio: 1500,
+  hideBrandName: 2500,
+  fadeOverlay: 3500,
+  completeIntro: 4500,
+};
 
 export function useSessionIntro() {
-  const [hasSeen, setHasSeen] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const [isBlue, setIsBlue] = useState(false);
-  const [fadePortfolio, setFadePortfolio] = useState(false);
-  const [fadeFernando, setFadeFernando] = useState(false);
-  const [fadeScreen, setFadeScreen] = useState(false);
+  const [hasSeenIntro, setHasSeenIntro] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [isPortfolioHighlighted, setIsPortfolioHighlighted] = useState(false);
+  const [hidePortfolio, setHidePortfolio] = useState(false);
+  const [hideBrandName, setHideBrandName] = useState(false);
+  const [fadeOverlay, setFadeOverlay] = useState(false);
 
   const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
-    if (sessionStorage.getItem(STORAGE_KEY) === "1") {
-      setHasSeen(true);
+    if (sessionStorage.getItem(INTRO_STORAGE_KEY) === "1") {
+      setHasSeenIntro(true);
       setVisible(false);
       return;
     }
 
-    if (hasSeen) return;
+    if (hasSeenIntro) return;
 
     setVisible(true);
-    setIsBlue(false);
-    setFadePortfolio(false);
-    setFadeFernando(false);
-    setFadeScreen(false);
+    setIsPortfolioHighlighted(false);
+    setHidePortfolio(false);
+    setHideBrandName(false);
+    setFadeOverlay(false);
 
-    const t1 = window.setTimeout(() => setIsBlue(true), 500);
-    const t2 = window.setTimeout(() => setFadePortfolio(true), 1500);
-    const t3 = window.setTimeout(() => setFadeFernando(true), 2500);
-    const t4 = window.setTimeout(() => setFadeScreen(true), 3500);
+    const highlightPortfolioTimer = window.setTimeout(
+      () => setIsPortfolioHighlighted(true),
+      INTRO_TIMINGS_MS.highlightPortfolio,
+    );
+    const hidePortfolioTimer = window.setTimeout(
+      () => setHidePortfolio(true),
+      INTRO_TIMINGS_MS.hidePortfolio,
+    );
+    const hideBrandNameTimer = window.setTimeout(
+      () => setHideBrandName(true),
+      INTRO_TIMINGS_MS.hideBrandName,
+    );
+    const fadeOverlayTimer = window.setTimeout(
+      () => setFadeOverlay(true),
+      INTRO_TIMINGS_MS.fadeOverlay,
+    );
 
-    const t5 = window.setTimeout(() => {
-      sessionStorage.setItem(STORAGE_KEY, "1");
-      setHasSeen(true);
+    const completeIntroTimer = window.setTimeout(() => {
+      sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
+      setHasSeenIntro(true);
       setVisible(false);
-    }, 4500);
+    }, INTRO_TIMINGS_MS.completeIntro);
 
-    timersRef.current = [t1, t2, t3, t4, t5];
+    timersRef.current = [
+      highlightPortfolioTimer,
+      hidePortfolioTimer,
+      hideBrandNameTimer,
+      fadeOverlayTimer,
+      completeIntroTimer,
+    ];
 
     return () => {
       timersRef.current.forEach((id) => window.clearTimeout(id));
       timersRef.current = [];
     };
-  }, [hasSeen]);
+  }, [hasSeenIntro]);
 
-  return { visible, isBlue, fadePortfolio, fadeFernando, fadeScreen };
+  return {
+    visible,
+    isPortfolioHighlighted,
+    hidePortfolio,
+    hideBrandName,
+    fadeOverlay,
+  };
 }

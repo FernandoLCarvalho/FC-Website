@@ -5,11 +5,12 @@
   "SELECT_LANGUAGE": "Seleccione idioma",
   "BUILDING_SOLUCTIONS": "Construyendo soluciones web eficientes y escalables para el mundo digital.",
   "QUOTE": "Háblame",
-  "FAQ": "Vuelva a la página de inicio si desea ver las FAQs.",
+  "ASSET_CREDITS": "Créditos",
+  "ASSET_CREDITS_HOME_ONLY": "Vuelva a la página de inicio si desea ver los créditos.",
   "WARN": "Aviso",
   "WHATSAPP_CONTACT": "Hola, estoy interesado en discutir una oportunidad de trabajo contigo. ¿Podríamos hablar?",
   "DESCRIPTION": "Desarrollador Frontend con más de 2 años de experiencia práctica, enfocado en la construcción de interfaces modernas, rendimiento y organización de código.",
   "CURRENTLY": "Actualmente vivo cerca de:",
   "LOCATION": "Goiania, Brasil",
-  "FAQ_02": "Este sitio web está construido utilizando Next.js, CSS Modules y React Three Fiber"
+  "SITE_TECH_NOTE": "Este sitio web está construido utilizando Next.js, CSS Modules y React Three Fiber"
 }

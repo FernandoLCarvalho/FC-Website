@@ -26,7 +26,7 @@
   pointer-events: auto;
 }
 
-.button {
+.whatsAppButton {
   position: relative;
   min-height: 54px;
   padding: 0 28px;
@@ -48,66 +48,71 @@
   pointer-events: auto;
 }
 
-.button::before,
-.button::after,
-.button span::before,
-.button span::after {
+.whatsAppButton::before,
+.whatsAppButton::after,
+.whatsAppButtonLabel::before,
+.whatsAppButtonLabel::after {
   content: "";
   position: absolute;
   background-color: white;
   transition: all 1s ease-in-out;
 }
 
-.button::before {
+.whatsAppButton::before {
   height: 2px;
   width: 0;
   top: 0;
   left: 0;
 }
 
-.button::after {
+.whatsAppButton::after {
   width: 2px;
   height: 0;
   top: 0;
   right: 0;
 }
 
-.button span::before {
+.whatsAppButtonLabel::before {
   height: 2px;
   width: 0;
   bottom: 0;
   right: 0;
 }
 
-.button span::after {
+.whatsAppButtonLabel::after {
   width: 2px;
   height: 0;
   bottom: 0;
   left: 0;
 }
 
-.button:hover::before {
+.whatsAppButton:hover::before {
   width: 100%;
 }
 
-.button:hover::after {
+.whatsAppButton:hover::after {
   height: 100%;
 }
 
-.button:hover span::before {
+.whatsAppButton:hover .whatsAppButtonLabel::before {
   width: 100%;
 }
 
-.button:hover span::after {
+.whatsAppButton:hover .whatsAppButtonLabel::after {
   height: 100%;
 }
 
-.button:focus-visible {
+.whatsAppButton:focus-visible {
   outline: 2px solid #93c5fd;
   outline-offset: 4px;
 }
 
-.paragragh {
+.whatsAppButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.paragraph {
   text-align: center;
   z-index: 50;
   max-width: 1120px;
@@ -142,13 +147,13 @@
 }
 
 @media (min-width: 500px) {
-  .paragragh {
+  .paragraph {
     font-size: 1.15rem;
   }
 }
 
 @media (min-width: 900px) {
-  .paragragh {
+  .paragraph {
     font-size: 1.5rem;
   }
 }
@@ -158,7 +163,7 @@
     margin: 0 24px;
   }
 
-  .button {
+  .whatsAppButton {
     min-height: 50px;
     padding: 0 22px;
   }

@@ -5,11 +5,12 @@
   "SELECT_LANGUAGE": "Select Language",
   "BUILDING_SOLUCTIONS": "Building efficient and scalable web solutions for the digital world.",
   "QUOTE": "Talk to me",
-  "FAQ": "Please go back to homepage to see the FAQs.",
+  "ASSET_CREDITS": "Credits",
+  "ASSET_CREDITS_HOME_ONLY": "Please go back to the homepage to see the credits.",
   "WARN": "Warning",
   "WHATSAPP_CONTACT": "Hello, I'm interested in discussing a job opportunity with you. Could we talk?",
   "DESCRIPTION": "Frontend Developer with over 2 years of hands-on experience focused on modern interfaces, performance and clean architecture.",
   "CURRENTLY": "Currently living next to:",
   "LOCATION": "Goiania, Brazil",
-  "FAQ_02": "This website is built with Next.js, CSS Modules and React Three Fiber"
+  "SITE_TECH_NOTE": "This website is built with Next.js, CSS Modules and React Three Fiber"
 }

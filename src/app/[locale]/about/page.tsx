@@ -1,3 +1,3 @@
-import AboutView from "@components/about/AboutView";
+import AboutView from "@components/about";
 
 export default AboutView;

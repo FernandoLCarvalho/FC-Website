@@ -6,18 +6,26 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import type { CSSProperties } from "react";
 
-const Scene = dynamic(() => import("@components/three/Scene"));
+const StarClusterScene = dynamic(
+  () => import("@components/three/starClusterScene"),
+);
+
+function buildWhatsAppContactUrl(message: string) {
+  const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER?.trim();
+  if (!phoneNumber) return null;
+
+  return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+}
 
 export default function MainSection() {
   const t = useTranslations();
   const mainText = t("BUILDING_SOLUCTIONS");
+  const whatsAppContactUrl = buildWhatsAppContactUrl(t("WHATSAPP_CONTACT"));
 
   const handleWhatsAppRedirect = () => {
-    const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
-    const message = encodeURIComponent(t("WHATSAPP_CONTACT"));
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    if (!whatsAppContactUrl) return;
 
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    window.open(whatsAppContactUrl, "_blank", "noopener,noreferrer");
   };
 
   const forwardButtonWheelToCanvas = (
@@ -53,7 +61,7 @@ export default function MainSection() {
       onWheel={forwardButtonWheelToCanvas}
     >
       <article className={localStyles.article}>
-        <p className={localStyles.paragragh} aria-label={mainText}>
+        <p className={localStyles.paragraph} aria-label={mainText}>
           {Array.from(mainText).map((character, index) => (
             <span
               key={`${character}-${index}`}
@@ -66,8 +74,12 @@ export default function MainSection() {
           ))}
         </p>
 
-        <button className={localStyles.button} onClick={handleWhatsAppRedirect}>
-          <span>{t("QUOTE")}</span>
+        <button
+          className={localStyles.whatsAppButton}
+          disabled={!whatsAppContactUrl}
+          onClick={handleWhatsAppRedirect}
+        >
+          <span className={localStyles.whatsAppButtonLabel}>{t("QUOTE")}</span>
           <Image
             src="/WhatsApp.svg"
             alt="WhatsApp Icon"
@@ -78,7 +90,7 @@ export default function MainSection() {
       </article>
 
       <div className={localStyles.sceneWrapper}>
-        <Scene />
+        <StarClusterScene />
       </div>
     </section>
   );
