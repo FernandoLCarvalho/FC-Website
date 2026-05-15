@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 
 import { useLocale } from "@/context/LocaleContext";
@@ -15,6 +15,7 @@ import MenuItems, { type NavMenuItem } from "./menuItems";
 
 export default function NavBar() {
   const headerRef = useNavHeaderHeightCssVariable();
+  const assetCreditsPanelRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isAssetCreditsOpen, setIsAssetCreditsOpen] = useState(false);
   const t = useTranslations();
@@ -32,6 +33,34 @@ export default function NavBar() {
   useEffect(() => {
     setIsAssetCreditsOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!isAssetCreditsOpen) return;
+
+    const handlePointerDownOutsideCredits = (event: PointerEvent) => {
+      const target = event.target;
+
+      if (!(target instanceof Node)) return;
+      if (assetCreditsPanelRef.current?.contains(target)) return;
+      if (
+        target instanceof Element &&
+        target.closest('[data-nav-item-id="assetCredits"]')
+      ) {
+        return;
+      }
+
+      setIsAssetCreditsOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handlePointerDownOutsideCredits);
+
+    return () => {
+      document.removeEventListener(
+        "pointerdown",
+        handlePointerDownOutsideCredits,
+      );
+    };
+  }, [isAssetCreditsOpen]);
 
   const handleLocaleChange = (newLocale: Locale) => {
     router.push(pathname, { locale: newLocale });
@@ -61,6 +90,7 @@ export default function NavBar() {
       <LanguageModifier locale={locale} onLocaleChange={handleLocaleChange} />
 
       <div
+        ref={assetCreditsPanelRef}
         className={`${styles.assetCreditsPanel} ${
           isAssetCreditsOpen ? styles.show : styles.hide
         }`}
