@@ -10,11 +10,18 @@ const StarClusterScene = dynamic(
   () => import("@components/three/starClusterScene"),
 );
 
+const MOBILE_LANDSCAPE_SCROLL_MEDIA_QUERY =
+  "(orientation: landscape) and (max-height: 560px) and (pointer: coarse)";
+
 function buildWhatsAppContactUrl(message: string) {
   const phoneNumber = contact.whatsAppPhoneNumber;
   if (!phoneNumber) return null;
 
   return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+}
+
+function shouldKeepWheelForPageScroll() {
+  return window.matchMedia(MOBILE_LANDSCAPE_SCROLL_MEDIA_QUERY).matches;
 }
 
 function mailToContactUrl(email: string, subject: string) {
@@ -56,6 +63,8 @@ export default function MainSection() {
   const forwardButtonWheelToCanvas = (
     event: React.WheelEvent<HTMLElement>,
   ) => {
+    if (shouldKeepWheelForPageScroll()) return;
+
     const target = event.target as HTMLElement;
     if (!target.closest("button")) return;
 

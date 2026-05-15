@@ -1,6 +1,7 @@
 .section {
   position: relative;
   flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,7 +79,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 36px;
+  margin: 36px 0 40px;
   pointer-events: auto;
 }
 
@@ -209,7 +210,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
     max-width: 420px;
-    margin-top: 32px;
+    margin: 32px 0 34px;
   }
 
   .contactButton {
@@ -218,5 +219,24 @@
     min-width: 0;
     padding: 0 10px;
     font-size: 0.8rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) and (pointer: coarse) {
+  .section {
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .article {
+    padding: 32px 0 22px;
+  }
+
+  .sceneWrapper {
+    pointer-events: none;
   }
 }
