@@ -1,5 +1,6 @@
 .body {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -11,4 +12,5 @@
 .main {
   flex: 1;
   display: flex;
+  min-height: 0;
 }
