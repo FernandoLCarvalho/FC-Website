@@ -215,7 +215,8 @@
   overflow-y: auto;
   transition:
     opacity 0.4s ease,
-    transform 0.4s ease;
+    transform 0.4s ease,
+    visibility 0s linear 0.4s;
   transform: translateX(100%);
   opacity: 0;
   z-index: 30;
@@ -230,6 +231,10 @@
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    visibility 0s;
 }
 
 .assetCreditsPanel.hide {

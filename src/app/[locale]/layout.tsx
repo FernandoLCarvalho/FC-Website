@@ -14,7 +14,7 @@ import Footer from "@components/shell/footer";
 export const metadata = {
   title: "Fernando Carvalho Portfolio",
   description:
-    "Building efficient and scalable web solutions for the digital world.",
+    "Software engineer focused on React/Next.js product interfaces, API integration and spec-driven AI workflows.",
   icons: {
     icon: "/favicon.ico",
   },

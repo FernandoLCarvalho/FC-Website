@@ -2,28 +2,22 @@
 
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
 import { useLocale } from "@/context/LocaleContext";
 import type { Locale } from "@/utils/i18n/locale";
-import { Toast } from "primereact/toast";
 import AssetCredits from "@components/shell/assetCredits";
 import { useNavHeaderHeightCssVariable } from "./hook/useNavHeaderHeightCssVariable";
 import LanguageModifier from "./languageModifier";
 import NavBarLogo from "./logo";
 import MenuItems, { type NavMenuItem } from "./menuItems";
 
-function isHomePath(pathname: string) {
-  return pathname === "/";
-}
-
 export default function NavBar() {
   const headerRef = useNavHeaderHeightCssVariable();
   const [isOpen, setIsOpen] = useState(false);
   const [isAssetCreditsOpen, setIsAssetCreditsOpen] = useState(false);
   const t = useTranslations();
-  const toast = useRef<Toast>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -31,23 +25,8 @@ export default function NavBar() {
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
-  const showToast = (phrase: string) => {
-    toast.current?.show({
-      severity: "warn",
-      summary: t("WARN"),
-      detail: phrase,
-      life: 5000,
-    });
-  };
-
   const toggleAssetCredits = () => {
-    if (isHomePath(pathname)) {
-      setIsAssetCreditsOpen((prev) => !prev);
-      return;
-    }
-
-    showToast(t("ASSET_CREDITS_HOME_ONLY"));
-    setIsAssetCreditsOpen(false);
+    setIsAssetCreditsOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -70,8 +49,6 @@ export default function NavBar() {
 
   return (
     <header ref={headerRef} className={styles.header}>
-      <Toast ref={toast} />
-
       <NavBarLogo />
 
       <MenuItems

@@ -17,6 +17,8 @@
   justify-content: center;
   margin: 0 40px;
   width: 100%;
+  max-width: 980px;
+  text-align: center;
 }
 
 .sceneWrapper {
@@ -26,101 +28,100 @@
   pointer-events: auto;
 }
 
-.whatsAppButton {
-  position: relative;
-  min-height: 54px;
-  padding: 0 28px;
-  color: white;
-  border: 0;
-  background-color: transparent;
-  cursor: pointer;
+.role {
+  margin: 0 0 18px;
+  color: #93c5fd;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.title {
+  z-index: 50;
+  max-width: 100%;
+  margin: 0;
+  color: #ededed;
+  font-family: "Roboto Mono", monospace;
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.paragraph {
+  max-width: 760px;
+  margin: 28px 0 0;
+  color: #f8fafc;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.credential {
+  max-width: 680px;
+  margin: 16px 0 0;
+  color: #cbd5e1;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.contactActions {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 12px;
-  font-family: "Roboto", sans-serif;
-  font-size: 1rem;
-  margin-top: clamp(36px, 8vh, 84px);
-  font-weight: bold;
-  text-transform: uppercase;
-  overflow: hidden;
-  white-space: nowrap;
+  margin-top: 36px;
   pointer-events: auto;
 }
 
-.whatsAppButton::before,
-.whatsAppButton::after,
-.whatsAppButtonLabel::before,
-.whatsAppButtonLabel::after {
-  content: "";
-  position: absolute;
-  background-color: white;
-  transition: all 1s ease-in-out;
+.contactButton {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  color: #f8fafc;
+  background: rgba(6, 10, 16, 0.62);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
 }
 
-.whatsAppButton::before {
-  height: 2px;
-  width: 0;
-  top: 0;
-  left: 0;
+.contactButton:hover {
+  border-color: rgba(56, 189, 248, 0.78);
+  background: rgba(15, 23, 42, 0.82);
+  transform: translateY(-1px);
 }
 
-.whatsAppButton::after {
-  width: 2px;
-  height: 0;
-  top: 0;
-  right: 0;
-}
-
-.whatsAppButtonLabel::before {
-  height: 2px;
-  width: 0;
-  bottom: 0;
-  right: 0;
-}
-
-.whatsAppButtonLabel::after {
-  width: 2px;
-  height: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.whatsAppButton:hover::before {
-  width: 100%;
-}
-
-.whatsAppButton:hover::after {
-  height: 100%;
-}
-
-.whatsAppButton:hover .whatsAppButtonLabel::before {
-  width: 100%;
-}
-
-.whatsAppButton:hover .whatsAppButtonLabel::after {
-  height: 100%;
-}
-
-.whatsAppButton:focus-visible {
+.contactButton:focus-visible {
   outline: 2px solid #93c5fd;
   outline-offset: 4px;
 }
 
-.whatsAppButton:disabled {
+.contactButton:disabled {
   cursor: not-allowed;
   opacity: 0.55;
 }
 
-.paragraph {
-  text-align: center;
-  z-index: 50;
-  max-width: 1120px;
-  margin: 0;
-  color: #ededed;
-  font-size: 1rem;
-  line-height: 1.45;
-  white-space: pre-wrap;
+.contactButton:disabled:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(6, 10, 16, 0.62);
+  transform: none;
 }
 
 .shineLetter {
@@ -147,14 +148,28 @@
 }
 
 @media (min-width: 500px) {
+  .title {
+    font-size: 3.6rem;
+  }
+
   .paragraph {
     font-size: 1.15rem;
   }
 }
 
 @media (min-width: 900px) {
+  .title {
+    font-size: 5rem;
+  }
+
   .paragraph {
-    font-size: 1.5rem;
+    font-size: 1.22rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .title {
+    font-size: 6rem;
   }
 }
 
@@ -163,8 +178,17 @@
     margin: 0 24px;
   }
 
-  .whatsAppButton {
-    min-height: 50px;
-    padding: 0 22px;
+  .role {
+    font-size: 0.78rem;
+  }
+
+  .contactActions {
+    width: 100%;
+  }
+
+  .contactButton {
+    min-height: 42px;
+    padding: 0 14px;
+    font-size: 0.82rem;
   }
 }
