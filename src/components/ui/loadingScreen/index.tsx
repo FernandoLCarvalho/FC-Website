@@ -2,30 +2,30 @@ import styles from "./styles.module.css";
 
 interface ILoadingScreenProps {
   visible: boolean;
-  isBlue: boolean;
-  fadePortfolio: boolean;
-  fadeFernando: boolean;
-  fadeScreen: boolean;
+  isPortfolioHighlighted: boolean;
+  hidePortfolio: boolean;
+  hideBrandName: boolean;
+  fadeOverlay: boolean;
 }
 
 export default function LoadingScreen({
   visible,
-  isBlue,
-  fadePortfolio,
-  fadeFernando,
-  fadeScreen,
+  isPortfolioHighlighted,
+  hidePortfolio,
+  hideBrandName,
+  fadeOverlay,
 }: ILoadingScreenProps) {
   if (!visible) return null;
 
   return (
     <div
       className={`${styles.overlay} ${
-        fadeScreen ? styles.overlayHidden : styles.overlayVisible
+        fadeOverlay ? styles.overlayHidden : styles.overlayVisible
       }`}
     >
       <h1
         className={`${styles.brandName} ${
-          fadeFernando ? styles.textHidden : styles.textVisible
+          hideBrandName ? styles.textHidden : styles.textVisible
         }`}
       >
         Fernando Carvalho
@@ -34,8 +34,10 @@ export default function LoadingScreen({
       <div className={styles.wordGroup}>
         <h1
           className={`${styles.portfolioName} ${
-            isBlue ? styles.portfolioNameBlue : styles.portfolioNameWhite
-          } ${fadePortfolio ? styles.textHidden : styles.textVisible}`}
+            isPortfolioHighlighted
+              ? styles.portfolioNameBlue
+              : styles.portfolioNameWhite
+          } ${hidePortfolio ? styles.textHidden : styles.textVisible}`}
         >
           Portfolio
         </h1>

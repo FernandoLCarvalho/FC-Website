@@ -2,7 +2,9 @@
 
 import { useLayoutEffect, useRef } from "react";
 
-export function useNavHeaderHeight() {
+const NAV_HEADER_HEIGHT_CSS_VARIABLE = "--nav-h";
+
+export function useNavHeaderHeightCssVariable() {
   const headerRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -11,7 +13,10 @@ export function useNavHeaderHeight() {
 
     const syncHeaderHeightVariable = () => {
       const height = el.getBoundingClientRect().height;
-      document.documentElement.style.setProperty("--nav-h", `${height}px`);
+      document.documentElement.style.setProperty(
+        NAV_HEADER_HEIGHT_CSS_VARIABLE,
+        `${height}px`,
+      );
     };
 
     syncHeaderHeightVariable();

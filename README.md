@@ -61,7 +61,7 @@ This structure highlights the main folders related to functionality and i18n sup
 │   │   │   └── page.tsx       # Main page
 │   │   ├──  favicon.ico       # Recognized by Next.js 14 for generating the site tab icon
 │       ├── scenes             # Contains 3D scenes using React Three Fiber
-│   │         └── Scene.tsx    # Main 3D animation scene
+│   │         └── starClusterScene.tsx # Main 3D animation scene
 │   │      
 │   │      
 
@@ -76,7 +76,7 @@ FC-Website uses React Three Fiber to create immersive 3D animations and scenes d
 
 Key files and folders for 3D animations:
 
-- **scenes/Scene.tsx**: The main 3D scene rendered using React Three Fiber.
+- **src/components/three/starClusterScene.tsx**: The main 3D scene rendered using React Three Fiber.
 - **models**: Folder containing 3D models (GLB files) for different animated scenes.
 
 ## Internationalization
