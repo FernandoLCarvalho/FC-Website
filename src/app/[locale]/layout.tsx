@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -11,10 +12,39 @@ import SessionIntro from "@components/shell/sessionIntro";
 import NavBar from "@components/shell/navBar";
 import Footer from "@components/shell/footer";
 
-export const metadata = {
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  "https://fernando-carvalho-eosin.vercel.app";
+const siteTitle = "Fernando Carvalho Portfolio";
+const siteDescription =
+  "Software engineer focused on React/Next.js product interfaces, API integration and spec-driven AI workflows.";
+const socialPreviewImage = "/social-preview.png";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Fernando Carvalho Portfolio",
-  description:
-    "Software engineer focused on React/Next.js product interfaces, API integration and spec-driven AI workflows.",
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    url: siteUrl,
+    siteName: siteTitle,
+    type: "website",
+    images: [
+      {
+        url: socialPreviewImage,
+        width: 1200,
+        height: 630,
+        alt: "Fernando Carvalho portfolio preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+    images: [socialPreviewImage],
+  },
   icons: {
     icon: "/favicon.ico",
   },
