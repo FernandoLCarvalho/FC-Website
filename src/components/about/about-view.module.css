@@ -1,37 +1,9 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-height: calc(100vh - var(--nav-h) - var(--footer-h));
-  flex: 1;
-  padding: 72px 24px 80px;
-  background:
-    radial-gradient(circle at 50% 220px, rgba(255, 255, 255, 0.08), transparent 280px),
-    linear-gradient(to bottom, #050505 0%, #171717 45%, #353535 100%);
-  color: white;
-}
-
-.profileSection {
-  display: flex;
-  width: min(100%, 960px);
-  align-items: center;
-  flex-direction: column;
-}
-
-.title {
-  margin: 0 0 36px;
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
 .profileIntro {
   display: grid;
   width: 100%;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 36px;
+  gap: var(--fc-space-9);
 }
 
 .avatar {
@@ -45,119 +17,40 @@
 .profileCopy {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-.role {
-  margin: 0;
-  color: #93c5fd;
-  font-family: "Roboto", sans-serif;
-  font-size: 0.86rem;
-  font-weight: 700;
-  line-height: 1.35;
-  text-transform: uppercase;
+  gap: var(--fc-space-4);
 }
 
 .description {
   margin: 0;
-  color: #e5e7eb;
-  font-family: "Roboto", sans-serif;
+  color: var(--fc-color-text-soft);
+  font-family: var(--fc-font-body);
   font-size: 1rem;
   line-height: 1.6;
 }
 
-.competencySection {
-  width: min(100%, 960px);
-  margin-top: 72px;
-  text-align: center;
-}
-
 .sectionDescription {
-  max-width: 760px;
+  max-width: var(--fc-content-width-narrow);
   margin: 18px auto 0;
-  color: #d1d5db;
-  font-family: "Roboto", sans-serif;
+  color: var(--fc-color-text-muted);
+  font-family: var(--fc-font-body);
   font-size: 1rem;
   line-height: 1.65;
 }
 
-.techGrid {
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 32px;
-}
-
-.techCard {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-height: 232px;
-  padding: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 8px;
-  background: rgba(12, 18, 28, 0.78);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(10px);
-}
-
-.techName {
-  margin: 0;
-  color: #f8fafc;
-  font-size: 1.05rem;
-  font-weight: 700;
-  line-height: 1.2;
-  text-align: left;
-}
-
 .techDescription {
-  margin: 12px 0 0;
-  color: #d1d5db;
-  font-family: "Roboto", sans-serif;
+  margin: var(--fc-space-3) 0 0;
+  color: var(--fc-color-text-muted);
+  font-family: var(--fc-font-body);
   font-size: 0.95rem;
   line-height: 1.55;
   text-align: left;
 }
 
-.toolList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: auto 0 0;
-  padding: 22px 0 0;
-  list-style: none;
-}
-
-.toolItem {
-  padding: 6px 9px;
-  border: 1px solid rgba(125, 211, 252, 0.34);
-  border-radius: 8px;
-  color: #dbeafe;
-  background: rgba(14, 116, 144, 0.18);
-  font-family: "Roboto", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.mapSection {
-  width: min(100%, 760px);
-  margin-top: 72px;
-  text-align: center;
-}
-
-.sectionTitle {
-  margin: 0;
-  font-size: 1.45rem;
-  line-height: 1.2;
-}
-
 .mapDescription {
   max-width: 680px;
-  margin: 16px auto 0;
-  color: #d1d5db;
-  font-family: "Roboto", sans-serif;
+  margin: var(--fc-space-4) auto 0;
+  color: var(--fc-color-text-muted);
+  font-family: var(--fc-font-body);
   font-size: 0.98rem;
   line-height: 1.6;
 }
@@ -165,25 +58,21 @@
 .map {
   width: min(100%, 520px);
   height: 320px;
-  margin-top: 24px;
-  border-radius: 8px;
+  margin-top: var(--fc-space-6);
+  border-radius: var(--fc-radius-card);
   border: none;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.38);
 }
 
 .locationFallback {
   margin: 18px auto 0;
-  color: #d1d5db;
-  font-family: "Roboto", sans-serif;
+  color: var(--fc-color-text-muted);
+  font-family: var(--fc-font-body);
   font-size: 1rem;
   line-height: 1.5;
 }
 
 @media (max-width: 720px) {
-  .container {
-    padding: 48px 18px 64px;
-  }
-
   .profileIntro {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -198,20 +87,6 @@
   .avatar {
     width: 156px;
     height: 234px;
-  }
-
-  .techGrid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 36px;
-  }
-
-  .techCard {
-    min-height: auto;
-  }
-
-  .mapSection {
-    margin-top: 56px;
   }
 
   .map {

@@ -1,0 +1,44 @@
+.menu {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  outline: none;
+
+  height: 36px;
+  width: 36px;
+}
+
+.drawerClose {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+
+  background: transparent;
+  border: 1px solid var(--fc-border-panel);
+  border-radius: var(--fc-radius-card);
+  color: white;
+
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  outline: none;
+}
+
+.panelClose {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid var(--fc-border-panel);
+  border-radius: var(--fc-radius-card);
+  cursor: pointer;
+  color: white;
+  width: 32px;
+  height: 32px;
+}
+
+.menu:focus-visible,
+.drawerClose:focus-visible,
+.panelClose:focus-visible {
+  outline: 2px solid var(--fc-color-accent);
+  outline-offset: 4px;
+}

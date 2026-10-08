@@ -1,0 +1,16 @@
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: var(--fc-space-6);
+  border-radius: var(--fc-radius-card);
+}
+
+.link {
+  margin-top: var(--fc-space-6);
+}
+
+.icon {
+  vertical-align: middle;
+  margin-right: var(--fc-space-2);
+}

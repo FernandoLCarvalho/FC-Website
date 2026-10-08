@@ -10,13 +10,21 @@ useGLTF.preload(STAR_CLUSTER_MODEL_PATH);
 
 export default function StarClusterModel() {
   const starCluster = useGLTF(STAR_CLUSTER_MODEL_PATH);
-  const { actions } = useAnimations(
-    starCluster.animations,
-    starCluster.scene,
-  );
+  const { actions } = useAnimations(starCluster.animations, starCluster.scene);
 
   useEffect(() => {
-    actions[STAR_CLUSTER_ROTATION_ANIMATION]?.play();
+    const animation = actions[STAR_CLUSTER_ROTATION_ANIMATION];
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotion = () => {
+      if (media.matches) animation?.stop();
+      else animation?.play();
+    };
+    updateMotion();
+    media.addEventListener("change", updateMotion);
+    return () => {
+      media.removeEventListener("change", updateMotion);
+      animation?.stop();
+    };
   }, [actions]);
 
   return <primitive object={starCluster.scene} />;

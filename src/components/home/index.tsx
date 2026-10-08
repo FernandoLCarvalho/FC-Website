@@ -4,98 +4,27 @@ import dynamic from "next/dynamic";
 import localStyles from "./main-section.module.css";
 import { useTranslations } from "next-intl";
 import type { CSSProperties } from "react";
-import { contact } from "@/constants/contact";
+import { buildContactOptions } from "./contactOptions";
+import { useContactWheelForwarding } from "./hook/useContactWheelForwarding";
+import Button from "@components/ui/button";
+import Eyebrow from "@components/ui/eyebrow";
+import Icon from "@components/ui/icon";
 
 const StarClusterScene = dynamic(
   () => import("@components/three/starClusterScene"),
 );
 
-const MOBILE_LANDSCAPE_SCROLL_MEDIA_QUERY =
-  "(orientation: landscape) and (max-height: 560px) and (pointer: coarse)";
-
-function buildWhatsAppContactUrl(message: string) {
-  const phoneNumber = contact.whatsAppPhoneNumber;
-  if (!phoneNumber) return null;
-
-  return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-}
-
-function shouldKeepWheelForPageScroll() {
-  return window.matchMedia(MOBILE_LANDSCAPE_SCROLL_MEDIA_QUERY).matches;
-}
-
-function mailToContactUrl(email: string, subject: string) {
-  return `mailto:${email}?subject=${encodeURIComponent(subject)}`;
-}
-
 export default function MainSection() {
   const t = useTranslations();
   const homeName = t("HOME_NAME");
   const homeNameWords = homeName.split(" ");
-  const whatsAppContactUrl = buildWhatsAppContactUrl(t("WHATSAPP_CONTACT"));
-  const contactOptions = [
-    {
-      href: whatsAppContactUrl,
-      iconClassName: "pi pi-whatsapp",
-      label: t("WHATSAPP_CTA"),
-    },
-    {
-      href: mailToContactUrl(contact.email, t("EMAIL_SUBJECT")),
-      iconClassName: "pi pi-envelope",
-      label: t("EMAIL_CTA"),
-    },
-    {
-      href: contact.githubUrl,
-      iconClassName: "pi pi-github",
-      label: t("GITHUB_CTA"),
-    },
-    {
-      href: contact.linkedInUrl,
-      iconClassName: "pi pi-linkedin",
-      label: t("LINKEDIN_CTA"),
-    },
-  ];
-
-  const openContactInNewTab = (href: string) => {
-    window.open(href, "_blank", "noopener,noreferrer");
-  };
-
-  const forwardButtonWheelToCanvas = (
-    event: React.WheelEvent<HTMLElement>,
-  ) => {
-    if (shouldKeepWheelForPageScroll()) return;
-
-    const target = event.target as HTMLElement;
-    if (!target.closest("button")) return;
-
-    const canvas = event.currentTarget.querySelector("canvas");
-    if (!canvas) return;
-
-    event.preventDefault();
-    canvas.dispatchEvent(
-      new WheelEvent("wheel", {
-        bubbles: true,
-        cancelable: true,
-        clientX: event.clientX,
-        clientY: event.clientY,
-        ctrlKey: event.ctrlKey,
-        deltaMode: event.deltaMode,
-        deltaX: event.deltaX,
-        deltaY: event.deltaY,
-        deltaZ: event.deltaZ,
-        metaKey: event.metaKey,
-        shiftKey: event.shiftKey,
-      }),
-    );
-  };
+  const contactOptions = buildContactOptions(t);
+  const sectionRef = useContactWheelForwarding();
 
   return (
-    <section
-      className={localStyles.section}
-      onWheel={forwardButtonWheelToCanvas}
-    >
+    <section className={localStyles.section} ref={sectionRef}>
       <article className={localStyles.article}>
-        <p className={localStyles.role}>{t("HOME_ROLE")}</p>
+        <Eyebrow variant="home">{t("HOME_ROLE")}</Eyebrow>
 
         <h1 className={localStyles.title} aria-label={homeName}>
           {homeNameWords.map((word, wordIndex) => (
@@ -126,26 +55,23 @@ export default function MainSection() {
         </h1>
 
         <p className={localStyles.paragraph}>{t("BUILDING_SOLUTIONS")}</p>
-        <p className={localStyles.credential}>
-          {t("HOME_VOLPIE_CREDENTIAL")}
-        </p>
+        <p className={localStyles.credential}>{t("HOME_VOLPIE_CREDENTIAL")}</p>
 
         <div className={localStyles.contactActions}>
           {contactOptions.map((option) => (
-            <button
-              key={option.label}
-              className={localStyles.contactButton}
+            <Button
+              key={option.id}
+              startIcon={<Icon name={option.icon} />}
               disabled={!option.href}
               onClick={() => {
                 if (!option.href) return;
 
-                openContactInNewTab(option.href);
+                window.open(option.href, "_blank", "noopener,noreferrer");
               }}
               type="button"
             >
-              <i className={option.iconClassName} aria-hidden="true" />
-              <span>{option.label}</span>
-            </button>
+              {option.label}
+            </Button>
           ))}
         </div>
       </article>

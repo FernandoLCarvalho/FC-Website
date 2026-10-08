@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import ExternalLink from "@components/ui/externalLink";
 import styles from "./asset-credits.module.css";
 
 export default function AssetCredits() {
@@ -10,20 +11,24 @@ export default function AssetCredits() {
     <section className={styles.section} aria-labelledby="asset-credits-title">
       <div className={styles.block}>
         <h2 id="asset-credits-title" className={styles.title}>
-          Scene Landpage
+          {t("CREDIT_SCENE_TITLE")}
         </h2>
 
-        <p className={styles.text}>License: CC Attribution</p>
-        <p className={styles.text}>Author: Sebastian Sosnowski</p>
+        <p className={styles.text}>
+          {t("CREDIT_LICENSE", { license: "CC Attribution" })}
+        </p>
+        <p className={styles.text}>
+          {t("CREDIT_AUTHOR", { author: "Sebastian Sosnowski" })}
+        </p>
 
-        <a
+        <ExternalLink
+          appearance="credit"
           href="https://sketchfab.com/3d-models/star-cluster-15k-stars-model-51148b78a37a4a72b22d8e06f4293e07"
-          className={`${styles.link} ${styles.transitionFont}`}
           target="_blank"
           rel="noopener noreferrer"
         >
           Sketchfab
-        </a>
+        </ExternalLink>
       </div>
 
       <article className={styles.article}>

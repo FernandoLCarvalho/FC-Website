@@ -1,8 +1,8 @@
 "use client";
 
 import { Bounds, Html, OrbitControls, useProgress } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { Suspense, useMemo } from "react";
 import StarClusterModel from "./starClusterModel";
 
 const STAR_CLUSTER_CAMERA = {
@@ -10,6 +10,7 @@ const STAR_CLUSTER_CAMERA = {
   fov: 100,
 };
 
+// Retain the original permissive DPR/zoom bounds for visual and interaction parity.
 const STAR_CLUSTER_DPR: [number, number] = [0, 2];
 const STAR_CLUSTER_BOUNDS_MARGIN = 1;
 
@@ -21,12 +22,25 @@ const STAR_CLUSTER_ORBIT_CONTROLS = {
 
 function SceneLoadingProgress() {
   const { progress } = useProgress();
-  return <Html center>{progress.toFixed(1)}%</Html>;
+  const gl = useThree((state) => state.gl);
+  // Keep Html's DOM root stable when Fiber connects its event target during loading.
+  // Recreating that root races React 19's asynchronous unmount of the previous root.
+  const portal = useMemo(
+    () => ({ current: gl.domElement.parentElement! }),
+    [gl],
+  );
+  return (
+    <Html center portal={portal}>
+      {progress.toFixed(1)}%
+    </Html>
+  );
 }
 
 export default function StarClusterScene() {
   return (
     <Canvas
+      // Honor the hero's landscape pointer-events rule instead of Fiber's inline auto.
+      style={{ pointerEvents: "inherit" }}
       gl={{ antialias: true }}
       dpr={STAR_CLUSTER_DPR}
       resize={{ scroll: true, offsetSize: true }}

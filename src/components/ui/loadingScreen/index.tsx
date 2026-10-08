@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 
-interface ILoadingScreenProps {
+export interface LoadingScreenProps {
   visible: boolean;
   isPortfolioHighlighted: boolean;
   hidePortfolio: boolean;
@@ -14,25 +14,26 @@ export default function LoadingScreen({
   hidePortfolio,
   hideBrandName,
   fadeOverlay,
-}: ILoadingScreenProps) {
+}: LoadingScreenProps) {
   if (!visible) return null;
 
   return (
     <div
+      aria-hidden="true"
       className={`${styles.overlay} ${
         fadeOverlay ? styles.overlayHidden : styles.overlayVisible
       }`}
     >
-      <h1
+      <p
         className={`${styles.brandName} ${
           hideBrandName ? styles.textHidden : styles.textVisible
         }`}
       >
         Fernando Carvalho
-      </h1>
+      </p>
 
       <div className={styles.wordGroup}>
-        <h1
+        <p
           className={`${styles.portfolioName} ${
             isPortfolioHighlighted
               ? styles.portfolioNameBlue
@@ -40,7 +41,7 @@ export default function LoadingScreen({
           } ${hidePortfolio ? styles.textHidden : styles.textVisible}`}
         >
           Portfolio
-        </h1>
+        </p>
 
         <div className={styles.loadingDot} />
       </div>

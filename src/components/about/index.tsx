@@ -1,19 +1,16 @@
+import { buildCurrentLocationMapUrl } from "./locationMap";
+import LocationSection from "./locationSection";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { professionalCompetencies } from "@/constants/technologies";
+import PageContainer from "@components/ui/pageContainer";
+import ContentSection from "@components/ui/contentSection";
+import SectionTitle from "@components/ui/sectionTitle";
+import Card from "@components/ui/card";
+import CardGrid from "@components/ui/cardGrid";
+import ChipList from "@components/ui/chipList";
+import Eyebrow from "@components/ui/eyebrow";
 import styles from "./about-view.module.css";
-
-const APPROXIMATE_LOCATION_QUERY = "Goiania, Brazil";
-const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps/embed/v1/place";
-
-function buildCurrentLocationMapUrl(apiKey: string) {
-  const params = new URLSearchParams({
-    key: apiKey,
-    q: APPROXIMATE_LOCATION_QUERY,
-  });
-
-  return `${GOOGLE_MAPS_EMBED_URL}?${params.toString()}`;
-}
 
 export default async function AboutView() {
   const t = await getTranslations();
@@ -23,9 +20,11 @@ export default async function AboutView() {
     : null;
 
   return (
-    <div className={styles.container}>
-      <section className={styles.profileSection}>
-        <h1 className={styles.title}>{t("ABOUT")}</h1>
+    <PageContainer>
+      <ContentSection>
+        <SectionTitle as="h1" variant="page">
+          {t("ABOUT")}
+        </SectionTitle>
 
         <div className={styles.profileIntro}>
           <Image
@@ -38,54 +37,46 @@ export default async function AboutView() {
           />
 
           <div className={styles.profileCopy}>
-            <p className={styles.role}>{t("ABOUT_ROLE")}</p>
+            <Eyebrow variant="profile">{t("ABOUT_ROLE")}</Eyebrow>
             <p className={styles.description}>{t("ABOUT_INTRO")}</p>
             <p className={styles.description}>{t("ABOUT_VOLPIE")}</p>
             <p className={styles.description}>{t("ABOUT_BACKEND")}</p>
           </div>
         </div>
-      </section>
+      </ContentSection>
 
-      <section className={styles.competencySection}>
-        <h2 className={styles.sectionTitle}>{t("TECH_SECTION_TITLE")}</h2>
+      <ContentSection spacing="section" align="center">
+        <SectionTitle as="h2" variant="section">
+          {t("TECH_SECTION_TITLE")}
+        </SectionTitle>
         <p className={styles.sectionDescription}>
           {t("SPEC_DRIVEN_AI_WORKFLOWS_DESCRIPTION")}
         </p>
 
-        <div className={styles.techGrid}>
+        <CardGrid>
           {professionalCompetencies.map((competency) => (
-            <article key={competency.id} className={styles.techCard}>
-              <h3 className={styles.techName}>{t(competency.titleKey)}</h3>
+            <Card key={competency.id}>
+              <SectionTitle as="h3" variant="card">
+                {t(competency.titleKey)}
+              </SectionTitle>
               <p className={styles.techDescription}>
                 {t(competency.descriptionKey)}
               </p>
-              <ul className={styles.toolList}>
-                {competency.tools.map((tool) => (
-                  <li key={tool} className={styles.toolItem}>
-                    {tool}
-                  </li>
-                ))}
-              </ul>
-            </article>
+              <ChipList items={competency.tools} />
+            </Card>
           ))}
-        </div>
-      </section>
+        </CardGrid>
+      </ContentSection>
 
-      <section className={styles.mapSection}>
-        <h2 className={styles.sectionTitle}>{t("CURRENTLY")}</h2>
-        <p className={styles.mapDescription}>{t("LOCATION_API_DESCRIPTION")}</p>
-        {currentLocationMapUrl ? (
-          <iframe
-            src={currentLocationMapUrl}
-            className={styles.map}
-            title={t("LOCATION_MAP_TITLE")}
-            allowFullScreen
-            loading="lazy"
-          />
-        ) : (
-          <p className={styles.locationFallback}>{t("LOCATION_FALLBACK")}</p>
-        )}
-      </section>
-    </div>
+      <LocationSection
+        mapUrl={currentLocationMapUrl}
+        labels={{
+          title: t("CURRENTLY"),
+          description: t("LOCATION_API_DESCRIPTION"),
+          mapTitle: t("LOCATION_MAP_TITLE"),
+          fallback: t("LOCATION_FALLBACK"),
+        }}
+      />
+    </PageContainer>
   );
 }

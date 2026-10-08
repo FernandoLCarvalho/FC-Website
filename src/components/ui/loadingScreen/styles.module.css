@@ -5,8 +5,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 24px;
+  gap: var(--fc-space-4);
+  padding: var(--fc-space-6);
   text-align: center;
   color: white;
   background: black;
@@ -26,13 +26,14 @@
 .brandName,
 .portfolioName {
   margin: 0;
+  font-weight: 700;
   font-size: clamp(1.2rem, 5vw, 1.5rem);
   line-height: 1.35;
   transition: opacity 1s;
 }
 
 .brandName {
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--fc-font-display);
 }
 
 .portfolioName {
@@ -46,14 +47,14 @@
 }
 
 .portfolioNameBlue {
-  color: #93c5fd;
+  color: var(--fc-color-accent);
 }
 
 .wordGroup {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: var(--fc-space-3);
   min-width: 0;
   min-height: 64px;
 }
@@ -62,7 +63,7 @@
   width: 16px;
   height: 16px;
   border-radius: 9999px;
-  background: #93c5fd;
+  background: var(--fc-color-accent);
   animation: customBounce 1.2s infinite;
 }
 
@@ -88,10 +89,21 @@
 @media (max-width: 430px) {
   .overlay {
     flex-direction: column;
-    gap: 8px;
+    gap: var(--fc-space-2);
   }
 
   .wordGroup {
     min-height: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingDot {
+    animation: none;
+  }
+  .overlay,
+  .brandName,
+  .portfolioName {
+    transition: none;
   }
 }

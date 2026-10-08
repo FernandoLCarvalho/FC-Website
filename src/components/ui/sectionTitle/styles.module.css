@@ -1,0 +1,21 @@
+.page {
+  margin: 0 0 var(--fc-space-9);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.card {
+  margin: 0;
+  color: var(--fc-color-text-strong);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.section {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}

@@ -1,11 +1,13 @@
-interface ProfessionalCompetency {
+import type messages from "../../messages/en.json";
+
+export interface ProfessionalCompetency {
   id: string;
-  titleKey: string;
-  descriptionKey: string;
-  tools: string[];
+  titleKey: keyof typeof messages;
+  descriptionKey: keyof typeof messages;
+  tools: readonly string[];
 }
 
-export const professionalCompetencies: ProfessionalCompetency[] = [
+export const professionalCompetencies = [
   {
     id: "product-frontend",
     titleKey: "TECH_PRODUCT_FRONTEND_TITLE",
@@ -43,4 +45,4 @@ export const professionalCompetencies: ProfessionalCompetency[] = [
     descriptionKey: "TECH_SYSTEM_UNDERSTANDING_DESCRIPTION",
     tools: ["CQRS exposure", "Background jobs", "Payments", "Persistence"],
   },
-];
+] as const satisfies readonly ProfessionalCompetency[];
