@@ -23,7 +23,18 @@ export function useSessionIntro() {
   const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
-    if (sessionStorage.getItem(INTRO_STORAGE_KEY) === "1") {
+    let introSeen = false;
+    try {
+      introSeen = sessionStorage.getItem(INTRO_STORAGE_KEY) === "1";
+    } catch {
+      /* Storage can be disabled. */
+    }
+    if (
+      introSeen ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      // Read browser storage after hydration without changing the intro schedule.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHasSeenIntro(true);
       setVisible(false);
       return;
@@ -55,7 +66,11 @@ export function useSessionIntro() {
     );
 
     const completeIntroTimer = window.setTimeout(() => {
-      sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
+      try {
+        sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
+      } catch {
+        /* Completion does not depend on storage. */
+      }
       setHasSeenIntro(true);
       setVisible(false);
     }, INTRO_TIMINGS_MS.completeIntro);

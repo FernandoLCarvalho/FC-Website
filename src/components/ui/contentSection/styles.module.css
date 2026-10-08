@@ -1,0 +1,26 @@
+.content {
+  width: min(100%, var(--fc-content-width));
+}
+.narrow {
+  width: min(100%, var(--fc-content-width-narrow));
+}
+.none {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.section,
+.map {
+  margin-top: var(--fc-space-section);
+}
+.start {
+  text-align: start;
+}
+.center {
+  text-align: center;
+}
+@media (max-width: 720px) {
+  .map {
+    margin-top: 56px;
+  }
+}

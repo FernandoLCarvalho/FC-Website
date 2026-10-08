@@ -1,0 +1,9 @@
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--icon-size, 1rem);
+  height: var(--icon-size, 1rem);
+  fill: currentColor;
+  font-size: 1rem;
+  line-height: 1;
+}

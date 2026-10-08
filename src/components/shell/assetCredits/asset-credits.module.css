@@ -19,22 +19,6 @@
   margin-bottom: 1rem;
 }
 
-.link {
-  font-size: 0.75rem;
-  color: #93c5fd;
-}
-
-.transitionFont {
-  transition:
-    font-size 0.3s ease-in-out,
-    color 0.5s ease-in-out;
-}
-
-.transitionFont:hover {
-  font-size: 0.8em;
-  color: rgb(50, 43, 255);
-}
-
 .article {
   font-size: 0.75rem;
   font-weight: bold;

@@ -1,0 +1,56 @@
+.contact {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 var(--fc-space-4);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--fc-radius-card);
+  color: var(--fc-color-text-strong);
+  background: rgba(6, 10, 16, 0.62);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  font-family: var(--fc-font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.contact:hover {
+  border-color: rgba(56, 189, 248, 0.78);
+  background: rgba(15, 23, 42, 0.82);
+  transform: translateY(-1px);
+}
+
+.contact:focus-visible {
+  outline: 2px solid var(--fc-color-accent);
+  outline-offset: 4px;
+}
+
+.contact:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.contact:disabled:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(6, 10, 16, 0.62);
+  transform: none;
+}
+
+@media (max-width: 720px) {
+  .contact {
+    width: 100%;
+    min-height: 42px;
+    min-width: 0;
+    padding: 0 10px;
+    font-size: 0.8rem;
+  }
+}

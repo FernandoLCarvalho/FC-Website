@@ -1,0 +1,19 @@
+.link {
+  font-size: 0.75rem;
+  color: var(--fc-color-accent);
+}
+
+.transitionFont {
+  transition:
+    font-size 0.3s ease-in-out,
+    color 0.5s ease-in-out;
+}
+
+.transitionFont:hover {
+  font-size: 0.8em;
+  color: rgb(50, 43, 255);
+}
+
+.action {
+  text-decoration: none;
+}

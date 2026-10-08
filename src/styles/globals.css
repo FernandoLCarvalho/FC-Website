@@ -1,13 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap");
-@import "primereact/resources/themes/saga-blue/theme.css";
-@import "primereact/resources/primereact.min.css";
-@import "primeicons/primeicons.css";
 
 :root {
+  color-scheme: light;
   --background: #0a0a0a;
   --foreground: #ededed;
   --nav-h: 72px;
   --footer-h: 32px;
+  --fc-font-body: "Roboto", sans-serif;
+  --fc-font-display: "Roboto Mono", monospace;
+  --fc-color-accent: #93c5fd;
+  --fc-color-text-strong: #f8fafc;
+  --fc-color-text-muted: #d1d5db;
+  --fc-color-text-soft: #e5e7eb;
+  --fc-color-text-navigation: #e2e8f0;
+  --fc-color-link-hover: #3b82f6;
+  --fc-color-shine: #38bdf8;
+  --fc-radius-card: 8px;
+  --fc-content-width: 960px;
+  --fc-content-width-narrow: 760px;
+  --fc-surface-card: rgba(12, 18, 28, 0.78);
+  --fc-border-panel: rgba(148, 163, 184, 0.24);
+  --fc-space-2: 8px;
+  --fc-space-3: 12px;
+  --fc-space-4: 16px;
+  --fc-space-6: 24px;
+  --fc-space-8: 32px;
+  --fc-space-9: 36px;
+  --fc-space-section: 72px;
+  --fc-menu-enter-duration: 220ms;
+  --fc-menu-exit-duration: 200ms;
 }
 
 * {
@@ -23,7 +44,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--fc-font-display);
 }
 
 button,

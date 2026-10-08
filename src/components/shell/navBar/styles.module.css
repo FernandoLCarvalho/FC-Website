@@ -42,45 +42,10 @@
   margin: 0;
 }
 
-.navItemLink {
-  color: white;
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
-}
-
-.navItemLink:hover {
-  color: #3b82f6;
-}
-
-.navItemButton {
-  background: transparent;
-  border: 0;
-  color: white;
-  cursor: pointer;
-  padding: 0;
-  font: inherit;
-  transition: color 0.2s ease-in-out;
-}
-
-.navItemButton:hover {
-  color: #3b82f6;
-}
-
 .hamburgerWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.hamburgerButton {
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  color: white;
-  outline: none;
-
-  height: 36px;
-  width: 36px;
 }
 
 .menuIcon {
@@ -110,30 +75,11 @@
 }
 
 .mobileMenuOpen {
-  animation: mobileMenuSlideIn 220ms ease-out forwards;
+  animation: mobileMenuSlideIn var(--fc-menu-enter-duration) ease-out forwards;
 }
 
 .mobileMenuClosed {
-  animation: mobileMenuSlideOut 200ms ease-in forwards;
-}
-
-.mobileCloseButton {
-  align-self: flex-end;
-  display: grid;
-  width: 36px;
-  height: 36px;
-  margin-bottom: 28px;
-  place-items: center;
-
-  background: transparent;
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  border-radius: 8px;
-  color: white;
-
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  outline: none;
+  animation: mobileMenuSlideOut var(--fc-menu-exit-duration) ease-in forwards;
 }
 
 .mobileNav {
@@ -150,58 +96,16 @@
   flex-direction: column;
   gap: 2px;
 
-  margin-top: 32px;
+  margin-top: var(--fc-space-8);
 
-  color: #e2e8f0;
-  font-family: "Roboto", sans-serif;
+  color: var(--fc-color-text-navigation);
+  font-family: var(--fc-font-body);
   font-size: 0.96rem;
   font-weight: 700;
 }
 
 .mobileNavItem {
   width: 100%;
-}
-
-.mobileNavLink,
-.mobileNavButton {
-  display: flex;
-  min-height: 46px;
-  width: 100%;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  padding: 0 10px;
-  border: 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
-  border-radius: 0;
-  background: transparent;
-  color: #e2e8f0;
-  font: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease-in-out,
-    background 0.2s ease-in-out,
-    color 0.2s ease-in-out;
-}
-
-.mobileNavLink::before,
-.mobileNavButton::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-top: 2px solid currentColor;
-  border-right: 2px solid currentColor;
-  flex: 0 0 auto;
-  opacity: 0.5;
-  transform: rotate(45deg);
-}
-
-.mobileNavLink:hover,
-.mobileNavButton:hover {
-  border-color: rgba(147, 197, 253, 0.3);
-  background: rgba(30, 41, 59, 0.34);
-  color: #93c5fd;
 }
 
 .backdrop {
@@ -214,11 +118,11 @@
 }
 
 .backdropOpen {
-  animation: backdropFadeIn 220ms ease-out forwards;
+  animation: backdropFadeIn var(--fc-menu-enter-duration) ease-out forwards;
 }
 
 .backdropClosed {
-  animation: backdropFadeOut 200ms ease-in forwards;
+  animation: backdropFadeOut var(--fc-menu-exit-duration) ease-in forwards;
 }
 
 @keyframes mobileMenuSlideIn {
@@ -267,7 +171,7 @@
   justify-content: flex-end;
 
   width: 100%;
-  gap: 16px;
+  gap: var(--fc-space-4);
 }
 
 .languageSelect {
@@ -275,7 +179,7 @@
   color: white;
 
   border: 1px solid #6b7280;
-  padding: 4px 8px;
+  padding: 4px var(--fc-space-2);
   border-radius: 6px;
 
   cursor: pointer;
@@ -286,7 +190,7 @@
 }
 
 .languageSelect:hover {
-  border-color: #93c5fd;
+  border-color: var(--fc-color-accent);
 }
 
 .languageOption {
@@ -294,24 +198,13 @@
   color: white;
 }
 
-.assetCreditsCloseButton {
-  background: rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
-  margin-bottom: 4px;
-  width: 32px;
-  height: 32px;
-}
-
 .assetCreditsPanel {
   background: rgba(5, 10, 18, 0.94);
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  border-radius: 8px;
+  border: 1px solid var(--fc-border-panel);
+  border-radius: var(--fc-radius-card);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.42);
   color: white;
-  padding: 16px;
+  padding: var(--fc-space-4);
   overflow-y: auto;
   transition:
     opacity 0.4s ease,
@@ -373,5 +266,59 @@
 
   .hamburgerWrapper {
     display: none;
+  }
+}
+
+/* Four localized nav items need the compact layout through landscape/tablet widths. */
+@media (min-width: 640px) and (max-width: 960px) {
+  .header {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: var(--fc-space-4);
+    padding-inline: var(--fc-space-4);
+  }
+
+  .navList {
+    gap: var(--fc-space-4);
+  }
+}
+
+/* Leave room for the longest labels even when a classic scrollbar takes 15px. */
+@media (min-width: 640px) and (max-width: 680px) {
+  .header {
+    padding-inline: var(--fc-space-2);
+  }
+}
+
+.drawerClosePlacement {
+  align-self: flex-end;
+  margin-bottom: 28px;
+}
+.panelClosePlacement {
+  margin-bottom: 4px;
+}
+
+.mobileMenu {
+  outline: none;
+}
+.languageSelect:focus-visible {
+  outline: 2px solid var(--fc-color-accent);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileMenuOpen,
+  .mobileMenuClosed,
+  .backdropOpen,
+  .backdropClosed {
+    animation: none;
+  }
+  .mobileMenuClosed {
+    transform: translateX(-100%);
+  }
+  .backdropClosed {
+    opacity: 0;
+  }
+  .assetCreditsPanel {
+    transition: none;
   }
 }

@@ -96,3 +96,21 @@ FC-Website is fully Dockerized, enabling easy setup and consistent environment m
 ## Deployment
 
 - **Link**: [Portfolio (Under Construction)](https://fernando-carvalho-eosin.vercel.app/)
+
+## End-to-end tests
+
+`npm run test:e2e` runs functional tests first, then the serial visual phase even
+when functional tests fail. Either phase failing makes the command fail. HTML
+reports are kept separately in `playwright-report/functional` and
+`playwright-report/visual`; test artifacts use corresponding `test-results/`
+subfolders. Visual viewport projects run one at a time with one worker and retain
+the existing baseline names and 100-pixel tolerance.
+
+`npm run test:e2e:headed` uses one worker and the desktop DPR 2 project, excluding
+visual comparisons. `E2E_PORT` selects the isolated production server port
+(default 3100). The narrow-header tests cover both overlay scrollbars and a
+reserved 15px classic scrollbar in every locale.
+
+The desktop orbit drag/zoom test has a 60-second budget. Before interaction it
+waits for the loading indicator to disappear and three consecutive matching
+canvas captures, with the same settling check after drag and zoom.

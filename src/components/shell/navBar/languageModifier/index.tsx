@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ChangeEvent } from "react";
 import { isSupportedLocale, type Locale } from "@/utils/i18n/locale";
 import styles from "../styles.module.css";
@@ -11,6 +12,7 @@ export default function LanguageModifier({
   locale,
   onLocaleChange,
 }: LanguageModifierProps) {
+  const t = useTranslations();
   const handleLanguageSelectChange = (
     event: ChangeEvent<HTMLSelectElement>,
   ) => {
@@ -23,6 +25,7 @@ export default function LanguageModifier({
   return (
     <div className={styles.languageWrapper}>
       <select
+        aria-label={t("SELECT_LANGUAGE")}
         value={locale}
         onChange={handleLanguageSelectChange}
         className={styles.languageSelect}
