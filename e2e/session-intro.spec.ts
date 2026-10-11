@@ -57,6 +57,37 @@ test("reduced motion hides the server overlay before hydration", async ({ page }
   await expect(portfolio).toBeHidden();
 });
 
+test("disabled JavaScript leaves the page usable immediately", async ({ browser }) => {
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    reducedMotion: "no-preference",
+    viewport: { width: 1440, height: 900 },
+  });
+  try {
+    const page = await context.newPage();
+    await page.goto("/en");
+    await expect(page.locator("[data-intro-overlay]")).toBeHidden();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await page.getByRole("link", { name: "About me" }).click();
+    await expect(page).toHaveURL(/\/en\/about$/);
+  } finally {
+    await context.close();
+  }
+});
+
+test("failed application chunks release the overlay after six seconds", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.route("**/_next/static/chunks/**", (route) => route.abort());
+  await page.goto("/en");
+  const overlay = page.locator("[data-intro-overlay]");
+  await expect(overlay).toBeVisible();
+  await expect(overlay).toBeHidden({ timeout: 6500 });
+  await expect(overlay).toHaveCSS("pointer-events", "none");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await page.getByRole("link", { name: "About me" }).click();
+  await expect(page).toHaveURL(/\/en\/about$/);
+});
+
 test("fresh intro preserves bold brand text, finishes, and does not repeat", async ({
   page,
 }) => {
@@ -67,6 +98,10 @@ test("fresh intro preserves bold brand text, finishes, and does not repeat", asy
     if (
       message.type() === "warning" &&
       message.text() === "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead."
+    ) return;
+    if (
+      message.type() === "warning" &&
+      /^\[\.WebGL-.*GPU stall due to ReadPixels/.test(message.text())
     ) return;
     if (["warning", "error"].includes(message.type())) errors.push(message.text());
   });

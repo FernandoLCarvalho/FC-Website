@@ -80,6 +80,12 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        <style>
+          {"@keyframes fc-intro-failsafe { to { visibility: hidden; pointer-events: none; } } [data-intro-overlay] { animation: fc-intro-failsafe 6s step-end forwards; }"}
+        </style>
+        <noscript>
+          <style>{"[data-intro-overlay] { display: none !important; }"}</style>
+        </noscript>
         <script
           dangerouslySetInnerHTML={{
             __html:
