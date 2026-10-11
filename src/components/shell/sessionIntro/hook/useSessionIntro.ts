@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 const INTRO_STORAGE_KEY = "fc_intro_seen";
 // Keep in sync with the inline CSS failsafe in the locale layout.
@@ -24,7 +24,7 @@ export function useSessionIntro() {
 
   const timersRef = useRef<number[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const completeIntro = () => {
       try {
         sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
@@ -41,9 +41,11 @@ export function useSessionIntro() {
     } catch {
       /* Storage can be disabled. */
     }
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (
       introSeen ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      document.documentElement.hasAttribute("data-intro-seen") ||
+      reducedMotion.matches
     ) {
       // Read browser storage after hydration without changing the intro schedule.
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -64,9 +66,13 @@ export function useSessionIntro() {
     // this effect so late hydration cannot hide the overlay over an inert page.
     const overlay = document.querySelector("[data-intro-overlay]");
     overlay?.setAttribute("data-intro-controlled", "");
-    const main = document.querySelector("main");
-    const previousInert = main?.inert ?? false;
-    if (main) main.inert = true;
+    // Suspend header/footer controls too: opening a keyboard-accessible modal
+    // under the overlay would give two effects ownership of main.inert.
+    const background = Array.from(
+      document.querySelectorAll<HTMLElement>("main, header, footer"),
+    );
+    const previousInert = background.map((element) => element.inert);
+    background.forEach((element) => { element.inert = true; });
 
     setVisible(true);
     setIsPortfolioHighlighted(false);
@@ -91,10 +97,15 @@ export function useSessionIntro() {
       INTRO_TIMINGS_MS.fadeOverlay,
     );
 
-    const completeIntroTimer = window.setTimeout(() => {
-      if (main) main.inert = previousInert;
-      completeIntro();
-    }, INTRO_TIMINGS_MS.completeIntro);
+    const completeIntroTimer = window.setTimeout(
+      completeIntro,
+      INTRO_TIMINGS_MS.completeIntro,
+    );
+
+    const onReducedMotionChange = (event: MediaQueryListEvent) => {
+      if (event.matches) completeIntro();
+    };
+    reducedMotion.addEventListener("change", onReducedMotionChange);
 
     timersRef.current = [
       highlightPortfolioTimer,
@@ -105,9 +116,14 @@ export function useSessionIntro() {
     ];
 
     return () => {
+      reducedMotion.removeEventListener("change", onReducedMotionChange);
       timersRef.current.forEach((id) => window.clearTimeout(id));
       timersRef.current = [];
-      if (main) main.inert = previousInert;
+      // Layout cleanup releases the page in the same commit that removes the
+      // overlay, including completion, reduced motion and unmount.
+      background.forEach((element, index) => {
+        element.inert = previousInert[index];
+      });
       overlay?.removeAttribute("data-intro-controlled");
     };
   }, [hasSeenIntro]);

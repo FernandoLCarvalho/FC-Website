@@ -231,3 +231,120 @@ test("reduced motion skips the intro and continuous name animation", async ({
   expect(animationNames.length).toBeGreaterThan(0);
   expect(animationNames.every((name) => name === "none")).toBe(true);
 });
+
+for (const duringFade of [false, true]) {
+  test(`enabling reduced motion ${duringFade ? "during fade" : "after takeover"} releases the page with the overlay`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/en");
+    const overlay = page.locator("[data-intro-overlay]");
+    await expect(overlay).toHaveAttribute("data-intro-controlled", "");
+    await expect(page.locator("main")).toHaveAttribute("inert", "");
+    if (duringFade) {
+      await page.waitForFunction(() => {
+        const overlay = document.querySelector("[data-intro-overlay]");
+        const opacity = overlay && Number(getComputedStyle(overlay).opacity);
+        return opacity !== null && opacity > 0 && opacity < 1;
+      });
+    }
+
+    // Sample the media event and the next two frames, without polling past the
+    // regression's hidden-but-inert interval or the normal completion timer.
+    await page.evaluate(() => {
+      const frames: { shown: boolean; inert: boolean }[] = [];
+      const media = matchMedia("(prefers-reduced-motion: reduce)");
+      Object.assign(window, {
+        reducedMotionFrames: new Promise<typeof frames>((resolve) => {
+          media.addEventListener("change", () => {
+            const sample = () => {
+              const overlay = document.querySelector("[data-intro-overlay]");
+              const style = overlay && getComputedStyle(overlay);
+              frames.push({
+                shown: !!style && style.display !== "none" &&
+                  style.visibility !== "hidden" && Number(style.opacity) > 0,
+                inert: document.querySelector("main")?.inert ?? false,
+              });
+              if (frames.length < 3) requestAnimationFrame(sample);
+              else resolve(frames);
+            };
+            sample();
+          }, { once: true });
+        }),
+      });
+    });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const frames = await page.evaluate(() => (
+      window as unknown as {
+        reducedMotionFrames: Promise<{ shown: boolean; inert: boolean }[]>;
+      }
+    ).reducedMotionFrames);
+    expect(frames.filter((frame) => frame.inert !== frame.shown)).toEqual([]);
+    expect(frames.at(-1)).toEqual({ shown: false, inert: false });
+    await expect(overlay).toHaveCount(0);
+    expect(await page.evaluate(() => sessionStorage.getItem("fc_intro_seen"))).toBe("1");
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await expect(overlay).toHaveCount(0);
+    await expect(page.locator("main")).not.toHaveAttribute("inert", "");
+  });
+}
+
+test("pre-paint returning marker stays authoritative if storage changes before hydration", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  let releaseChunks!: () => void;
+  const chunksReady = new Promise<void>((resolve) => { releaseChunks = resolve; });
+  await page.addInitScript(() => sessionStorage.setItem("fc_intro_seen", "1"));
+  await page.route("**/_next/static/chunks/**", async (route) => {
+    if (route.request().resourceType() === "script") await chunksReady;
+    await route.continue();
+  });
+  try {
+    await page.goto("/en", { waitUntil: "commit" });
+    await expect(page.locator("html")).toHaveAttribute("data-intro-seen", "");
+    const overlay = page.locator("[data-intro-overlay]");
+    await expect(overlay).toBeHidden();
+    await page.evaluate(() => {
+      sessionStorage.removeItem("fc_intro_seen");
+      const mutations: string[] = [];
+      Object.assign(window, { introInertMutations: mutations });
+      const main = document.querySelector("main")!;
+      new MutationObserver((records) => {
+        mutations.push(...records.map((record) => record.attributeName!));
+      }).observe(main, { attributes: true, attributeFilter: ["inert"] });
+    });
+    releaseChunks();
+    await expect(overlay).toHaveCount(0);
+    await expect(page.locator("main")).not.toHaveAttribute("inert", "");
+    expect(await page.evaluate(() => (
+      window as unknown as { introInertMutations: string[] }
+    ).introInertMutations)).toEqual([]);
+  } finally {
+    releaseChunks();
+  }
+});
+
+test("intro suspends keyboard controls that could claim main inert state", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/en");
+  await expect(page.locator("[data-intro-overlay]")).toHaveAttribute("data-intro-controlled", "");
+  for (const selector of ["main", "header", "footer"]) {
+    await expect(page.locator(selector)).toHaveAttribute("inert", "");
+  }
+  await page.keyboard.press("Tab");
+  expect(await page.evaluate(() =>
+    !!document.activeElement?.closest("main, header, footer"),
+  )).toBe(false);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator("[data-intro-overlay]")).toHaveCount(0);
+  for (const selector of ["main", "header", "footer"]) {
+    await expect(page.locator(selector)).not.toHaveAttribute("inert", "");
+  }
+  const menu = page.getByRole("button", { name: "Open menu" });
+  if (await menu.isVisible()) {
+    await menu.click();
+    await expect(page.locator("main")).toHaveAttribute("inert", "");
+    await page.keyboard.press("Escape");
+    await expect(page.locator("main")).not.toHaveAttribute("inert", "");
+    await menu.click();
+  }
+  await page.getByRole("link", { name: "About me" }).click();
+  await expect(page).toHaveURL(/\/en\/about$/);
+});

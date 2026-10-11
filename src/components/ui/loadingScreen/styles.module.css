@@ -13,7 +13,7 @@
   transition: opacity 1s;
 }
 
-:global(html[data-intro-seen]) .overlay {
+:global(html[data-intro-seen]) .overlay:not([data-intro-controlled]) {
   display: none;
 }
 
@@ -102,13 +102,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .overlay {
+  .overlay:not([data-intro-controlled]) {
     display: none;
   }
   .loadingDot {
     animation: none;
   }
-  .overlay,
+  .overlay:not([data-intro-controlled]),
   .brandName,
   .portfolioName {
     transition: none;
