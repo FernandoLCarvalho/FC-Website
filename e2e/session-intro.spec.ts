@@ -1,4 +1,14 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
+
+async function expectBackgroundFocusable(page: Page) {
+  for (const selector of ["main", "header", "footer"]) {
+    await expect(page.locator(selector)).toHaveCSS("visibility", "visible");
+  }
+  await page.keyboard.press("Tab");
+  expect(await page.evaluate(() =>
+    !!document.activeElement?.closest("main, header, footer"),
+  )).toBe(true);
+}
 
 // Use the unmodified Playwright page: normal fixtures deliberately mark the intro as seen.
 test.beforeEach(async ({ page }) => {
@@ -47,6 +57,67 @@ test("returning session hides the server overlay before hydration", async ({ pag
   const portfolio = page.getByText("Portfolio", { exact: true });
   await expect(portfolio).toHaveCount(1);
   await expect(portfolio).toBeHidden();
+  await expectBackgroundFocusable(page);
+});
+
+test("pre-hydration accessibility tree excludes the background and decorative intro", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.route("**/_next/**/*.js*", (route) => route.abort());
+  await page.goto("/en");
+  await expect(page.locator("[data-intro-overlay]")).toBeVisible();
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    const { nodes } = await cdp.send("Accessibility.getFullAXTree");
+    const exposed = nodes.filter((node) => !node.ignored);
+    expect(exposed.some((node) =>
+      ["link", "button", "heading", "banner", "main", "contentinfo", "StaticText"].includes(String(node.role?.value)),
+    )).toBe(false);
+    await expect(page.locator("[data-intro-overlay] a, [data-intro-overlay] button, [data-intro-overlay] [tabindex]")).toHaveCount(0);
+  } finally {
+    await cdp.detach();
+  }
+});
+
+test("returning session never hides the shell through hydration and locale navigation", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.addInitScript(() => {
+    sessionStorage.setItem("fc_intro_seen", "1");
+    const hiddenFrames: number[] = [];
+    Object.assign(window, { hiddenIntroShellFrames: hiddenFrames });
+    const sample = () => {
+      if (Array.from(document.querySelectorAll("[data-intro-background]")).some((element) =>
+        getComputedStyle(element).visibility === "hidden",
+      )) hiddenFrames.push(performance.now());
+      requestAnimationFrame(sample);
+    };
+    requestAnimationFrame(sample);
+  });
+  let releaseChunks!: () => void;
+  const chunksReady = new Promise<void>((resolve) => { releaseChunks = resolve; });
+  await page.route("**/_next/static/chunks/**", async (route) => {
+    if (route.request().resourceType() === "script") await chunksReady;
+    await route.continue();
+  });
+  try {
+    await page.goto("/en", { waitUntil: "commit" });
+    await expectBackgroundFocusable(page);
+    await page.waitForFunction(() => performance.now() >= 3000);
+    releaseChunks();
+    await expect(page.locator("[data-intro-overlay]")).toHaveCount(0);
+    expect(await page.evaluate(() =>
+      (window as unknown as { hiddenIntroShellFrames: number[] }).hiddenIntroShellFrames,
+    )).toEqual([]);
+    for (const locale of ["pt", "es"]) {
+      await page.goto(`/${locale}`);
+      await expect(page.locator("[data-intro-overlay]")).toHaveCount(0);
+      await expectBackgroundFocusable(page);
+      expect(await page.evaluate(() =>
+        (window as unknown as { hiddenIntroShellFrames: number[] }).hiddenIntroShellFrames,
+      )).toEqual([]);
+    }
+  } finally {
+    releaseChunks();
+  }
 });
 
 test("reduced motion hides the server overlay before hydration", async ({ page }) => {
@@ -55,6 +126,7 @@ test("reduced motion hides the server overlay before hydration", async ({ page }
   const portfolio = page.getByText("Portfolio", { exact: true });
   await expect(portfolio).toHaveCount(1);
   await expect(portfolio).toBeHidden();
+  await expectBackgroundFocusable(page);
 });
 
 test("disabled JavaScript leaves the page usable immediately", async ({ browser }) => {
@@ -68,6 +140,7 @@ test("disabled JavaScript leaves the page usable immediately", async ({ browser 
     await page.goto("/en");
     await expect(page.locator("[data-intro-overlay]")).toBeHidden();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expectBackgroundFocusable(page);
     await page.getByRole("link", { name: "About me" }).click();
     await expect(page).toHaveURL(/\/en\/about$/);
   } finally {
@@ -77,15 +150,32 @@ test("disabled JavaScript leaves the page usable immediately", async ({ browser 
 
 test("failed application chunks release the overlay after six seconds", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.route("**/_next/static/chunks/**", (route) => route.abort());
+  await page.route("**/_next/static/chunks/**", (route) =>
+    route.request().resourceType() === "script" ? route.abort() : route.continue(),
+  );
   await page.goto("/en");
   const overlay = page.locator("[data-intro-overlay]");
   await expect(overlay).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(0);
+  await page.keyboard.press("Tab");
+  expect(await page.evaluate(() =>
+    !!document.activeElement?.closest("main, header, footer"),
+  )).toBe(false);
   await expect(overlay).toBeHidden({ timeout: 6500 });
   await expect(overlay).toHaveCSS("pointer-events", "none");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await page.getByRole("link", { name: "About me" }).click();
-  await expect(page).toHaveURL(/\/en\/about$/);
+  await expectBackgroundFocusable(page);
+  if ((page.viewportSize()?.width ?? 0) < 640) {
+    // With failed JS the mobile menu cannot open. Check a native keyboard
+    // control instead; blocking CSS too would accidentally expose desktop links.
+    const language = page.getByRole("combobox");
+    await language.focus();
+    await page.keyboard.press("ArrowDown");
+    await expect(language).toHaveValue("pt");
+  } else {
+    await page.getByRole("link", { name: "About me" }).click();
+    await expect(page).toHaveURL(/\/en\/about$/);
+  }
 });
 
 for (const hydrationDelay of [3000, 7000]) {
@@ -99,15 +189,19 @@ for (const hydrationDelay of [3000, 7000]) {
       await route.continue();
     });
     await page.addInitScript(() => {
-      const samples: { time: number; shown: boolean; inert: boolean }[] = [];
+      const samples: { time: number; shown: boolean; inert: boolean; isolated: boolean }[] = [];
       Object.assign(window, { introFrames: samples });
       const sample = () => {
         const overlay = document.querySelector("[data-intro-overlay]");
         const style = overlay && getComputedStyle(overlay);
+        const background = Array.from(document.querySelectorAll<HTMLElement>("main, header, footer"));
         samples.push({
           time: performance.now(),
           shown: !!style && style.display !== "none" && style.visibility !== "hidden",
           inert: document.querySelector("main")?.inert ?? false,
+          isolated: background.length === 3 && background.every((element) =>
+            element.inert || getComputedStyle(element).visibility === "hidden",
+          ),
         });
         requestAnimationFrame(sample);
       };
@@ -119,6 +213,15 @@ for (const hydrationDelay of [3000, 7000]) {
       const overlay = page.locator("[data-intro-overlay]");
       const main = page.locator("main");
       await expect(overlay).toBeVisible();
+      for (let tab = 0; tab < 8; tab++) {
+        await page.keyboard.press("Tab");
+        expect(await page.evaluate(() =>
+          !!document.activeElement?.closest("main, header, footer"),
+        )).toBe(false);
+      }
+      // Hidden shell content is also excluded from role queries/accessibility.
+      await expect(page.getByRole("heading", { level: 1 })).toHaveCount(0);
+      await expect(page.getByRole("link")).toHaveCount(0);
       await page.waitForFunction((delay) => performance.now() >= delay, hydrationDelay);
       if (hydrationDelay > 6000) {
         await expect(overlay).toBeHidden();
@@ -142,15 +245,17 @@ for (const hydrationDelay of [3000, 7000]) {
       expect(await page.evaluate(() => sessionStorage.getItem("fc_intro_seen"))).toBe("1");
       const frames = await page.evaluate(() => (
         window as unknown as {
-          introFrames: { time: number; shown: boolean; inert: boolean }[];
+          introFrames: { time: number; shown: boolean; inert: boolean; isolated: boolean }[];
         }
       ).introFrames);
       expect(frames.filter((frame) => frame.inert && !frame.shown)).toEqual([]);
+      expect(frames.filter((frame) => frame.shown && !frame.isolated)).toEqual([]);
       if (hydrationDelay > 6000) {
         const afterHydration = frames.filter((frame) => frame.time >= releasedAt);
         expect(afterHydration.length).toBeGreaterThan(0);
         expect(afterHydration.some((frame) => frame.shown || frame.inert)).toBe(false);
       }
+      await expectBackgroundFocusable(page);
       const menu = page.getByRole("button", { name: "Open menu" });
       if (await menu.isVisible()) await menu.click();
       await page.getByRole("link", { name: "About me" }).click();
