@@ -81,7 +81,7 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning>
       <head>
         <style>
-          {"@keyframes fc-intro-failsafe { to { visibility: hidden; pointer-events: none; } } [data-intro-overlay] { animation: fc-intro-failsafe 6s step-end forwards; }"}
+          {"@keyframes fc-intro-failsafe { to { visibility: hidden; pointer-events: none; } } [data-intro-overlay]:not([data-intro-controlled]) { animation: fc-intro-failsafe 6s step-end forwards; }"}
         </style>
         <noscript>
           <style>{"[data-intro-overlay] { display: none !important; }"}</style>

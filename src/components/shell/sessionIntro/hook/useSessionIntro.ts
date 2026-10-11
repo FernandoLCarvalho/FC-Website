@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 
 const INTRO_STORAGE_KEY = "fc_intro_seen";
+// Keep in sync with the inline CSS failsafe in the locale layout.
+const INTRO_FAILSAFE_MS = 6000;
 
 const INTRO_TIMINGS_MS = {
   highlightPortfolio: 500,
@@ -23,6 +25,16 @@ export function useSessionIntro() {
   const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
+    const completeIntro = () => {
+      try {
+        sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
+      } catch {
+        /* Completion does not depend on storage. */
+      }
+      setHasSeenIntro(true);
+      setVisible(false);
+    };
+
     let introSeen = false;
     try {
       introSeen = sessionStorage.getItem(INTRO_STORAGE_KEY) === "1";
@@ -41,6 +53,20 @@ export function useSessionIntro() {
     }
 
     if (hasSeenIntro) return;
+
+    // The CSS fallback may already have released the page. Never replay it.
+    if (performance.now() >= INTRO_FAILSAFE_MS) {
+      completeIntro();
+      return;
+    }
+
+    // Take over the failsafe before making the page inert. Both are owned by
+    // this effect so late hydration cannot hide the overlay over an inert page.
+    const overlay = document.querySelector("[data-intro-overlay]");
+    overlay?.setAttribute("data-intro-controlled", "");
+    const main = document.querySelector("main");
+    const previousInert = main?.inert ?? false;
+    if (main) main.inert = true;
 
     setVisible(true);
     setIsPortfolioHighlighted(false);
@@ -66,13 +92,8 @@ export function useSessionIntro() {
     );
 
     const completeIntroTimer = window.setTimeout(() => {
-      try {
-        sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
-      } catch {
-        /* Completion does not depend on storage. */
-      }
-      setHasSeenIntro(true);
-      setVisible(false);
+      if (main) main.inert = previousInert;
+      completeIntro();
     }, INTRO_TIMINGS_MS.completeIntro);
 
     timersRef.current = [
@@ -86,6 +107,8 @@ export function useSessionIntro() {
     return () => {
       timersRef.current.forEach((id) => window.clearTimeout(id));
       timersRef.current = [];
+      if (main) main.inert = previousInert;
+      overlay?.removeAttribute("data-intro-controlled");
     };
   }, [hasSeenIntro]);
 

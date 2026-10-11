@@ -88,6 +88,79 @@ test("failed application chunks release the overlay after six seconds", async ({
   await expect(page).toHaveURL(/\/en\/about$/);
 });
 
+for (const hydrationDelay of [3000, 7000]) {
+  test(`hydration delayed ${hydrationDelay}ms keeps overlay and interactivity coordinated`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    let releaseChunks!: () => void;
+    const chunksReady = new Promise<void>((resolve) => { releaseChunks = resolve; });
+    await page.route("**/_next/static/chunks/**", async (route) => {
+      // CSS also lives under chunks; keep it available for the SSR first paint.
+      if (route.request().resourceType() === "script") await chunksReady;
+      await route.continue();
+    });
+    await page.addInitScript(() => {
+      const samples: { time: number; shown: boolean; inert: boolean }[] = [];
+      Object.assign(window, { introFrames: samples });
+      const sample = () => {
+        const overlay = document.querySelector("[data-intro-overlay]");
+        const style = overlay && getComputedStyle(overlay);
+        samples.push({
+          time: performance.now(),
+          shown: !!style && style.display !== "none" && style.visibility !== "hidden",
+          inert: document.querySelector("main")?.inert ?? false,
+        });
+        requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+
+    try {
+      await page.goto("/en", { waitUntil: "commit" });
+      const overlay = page.locator("[data-intro-overlay]");
+      const main = page.locator("main");
+      await expect(overlay).toBeVisible();
+      await page.waitForFunction((delay) => performance.now() >= delay, hydrationDelay);
+      if (hydrationDelay > 6000) {
+        await expect(overlay).toBeHidden();
+        await expect(main).not.toHaveAttribute("inert", "");
+      }
+      const releasedAt = await page.evaluate(() => performance.now());
+      releaseChunks();
+
+      if (hydrationDelay < 6000) {
+        await expect(main).toHaveAttribute("inert", "");
+        await page.waitForFunction(() => performance.now() >= 6250);
+        await expect(overlay).toBeVisible();
+        await expect(main).toHaveAttribute("inert", "");
+        await expect(overlay).toHaveCount(0, { timeout: 6500 });
+        expect(await page.evaluate(() => performance.now()) - releasedAt).toBeGreaterThanOrEqual(4500);
+      } else {
+        // Completion proves hydration ran; CSS hiding alone is not sufficient.
+        await expect(overlay).toHaveCount(0, { timeout: 3000 });
+      }
+      await expect(main).not.toHaveAttribute("inert", "");
+      expect(await page.evaluate(() => sessionStorage.getItem("fc_intro_seen"))).toBe("1");
+      const frames = await page.evaluate(() => (
+        window as unknown as {
+          introFrames: { time: number; shown: boolean; inert: boolean }[];
+        }
+      ).introFrames);
+      expect(frames.filter((frame) => frame.inert && !frame.shown)).toEqual([]);
+      if (hydrationDelay > 6000) {
+        const afterHydration = frames.filter((frame) => frame.time >= releasedAt);
+        expect(afterHydration.length).toBeGreaterThan(0);
+        expect(afterHydration.some((frame) => frame.shown || frame.inert)).toBe(false);
+      }
+      const menu = page.getByRole("button", { name: "Open menu" });
+      if (await menu.isVisible()) await menu.click();
+      await page.getByRole("link", { name: "About me" }).click();
+      await expect(page).toHaveURL(/\/en\/about$/);
+    } finally {
+      releaseChunks();
+    }
+  });
+}
+
 test("fresh intro preserves bold brand text, finishes, and does not repeat", async ({
   page,
 }) => {
