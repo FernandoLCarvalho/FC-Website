@@ -20,6 +20,7 @@ export default function LoadingScreen({
   return (
     <div
       aria-hidden="true"
+      data-intro-overlay
       className={`${styles.overlay} ${
         fadeOverlay ? styles.overlayHidden : styles.overlayVisible
       }`}

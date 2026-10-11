@@ -78,8 +78,38 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
+        <style>
+          {`
+            @keyframes fc-intro-failsafe {
+              from { --fc-intro-overlay: visible; --fc-intro-background: hidden; --fc-intro-pointer: auto; }
+              to { --fc-intro-overlay: hidden; --fc-intro-background: visible; --fc-intro-pointer: none; }
+            }
+            /* One inherited clock keeps streamed shell content and the overlay in sync. */
+            body:has(> [data-intro-overlay]:not([data-intro-controlled])) {
+              animation: fc-intro-failsafe 6s step-end forwards;
+            }
+            [data-intro-overlay]:not([data-intro-controlled]) {
+              visibility: var(--fc-intro-overlay, visible);
+              pointer-events: var(--fc-intro-pointer, auto);
+            }
+            @media (prefers-reduced-motion: no-preference) {
+              html:not([data-intro-seen]) body:has(> [data-intro-overlay]:not([data-intro-controlled])) > [data-intro-background] {
+                visibility: var(--fc-intro-background, hidden);
+              }
+            }
+          `}
+        </style>
+        <noscript>
+          <style>{"[data-intro-overlay] { display: none !important; } [data-intro-background] { visibility: visible !important; }"}</style>
+        </noscript>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{if(sessionStorage.getItem("fc_intro_seen")==="1"){document.documentElement.setAttribute("data-intro-seen","");}}catch{}',
+          }}
+        />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="manifest" href="/manifest.json" />
@@ -93,11 +123,11 @@ export default async function LocaleLayout({
       <body className={styles.body}>
         <SessionIntro />
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <div className={styles.shellLayer}>
+          <div className={styles.shellLayer} data-intro-background>
             <NavBar />
           </div>
-          <main className={styles.main}>{children}</main>
-          <div className={styles.shellLayer}>
+          <main className={styles.main} data-intro-background>{children}</main>
+          <div className={styles.shellLayer} data-intro-background>
             <Footer />
           </div>
         </NextIntlClientProvider>
