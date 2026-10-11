@@ -14,7 +14,7 @@ const INTRO_TIMINGS_MS = {
 
 export function useSessionIntro() {
   const [hasSeenIntro, setHasSeenIntro] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [isPortfolioHighlighted, setIsPortfolioHighlighted] = useState(false);
   const [hidePortfolio, setHidePortfolio] = useState(false);
   const [hideBrandName, setHideBrandName] = useState(false);

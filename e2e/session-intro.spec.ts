@@ -14,9 +14,62 @@ test.beforeEach(async ({ page }) => {
   );
 });
 
+// Keep the server HTML and blocking head script, but prevent React from hydrating.
+// These checks catch flashes that post-hydration visibility assertions cannot.
+for (const path of ["/", "/pt", "/en", "/es"]) {
+  test(`fresh intro covers the page before hydration on ${path}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.route("**/_next/**/*.js*", (route) => route.abort());
+    await page.goto(path);
+    const overlay = page.getByText("Portfolio", { exact: true }).locator("../..");
+    await expect(overlay).toBeVisible();
+    await expect(overlay).toHaveCSS("opacity", "1");
+    await expect(overlay).toHaveCSS("background-color", "rgb(0, 0, 0)");
+    expect(await overlay.boundingBox()).toEqual({
+      x: 0,
+      y: 0,
+      ...page.viewportSize(),
+    });
+    expect(await overlay.evaluate((element) =>
+      [[0.1, 0.1], [0.5, 0.5], [0.9, 0.9]].every(([x, y]) =>
+        element.contains(document.elementFromPoint(innerWidth * x, innerHeight * y)),
+      ),
+    )).toBe(true);
+  });
+}
+
+test("returning session hides the server overlay before hydration", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.addInitScript(() => sessionStorage.setItem("fc_intro_seen", "1"));
+  await page.route("**/_next/**/*.js*", (route) => route.abort());
+  await page.goto("/pt");
+  await expect(page.locator("html")).toHaveAttribute("data-intro-seen", "");
+  const portfolio = page.getByText("Portfolio", { exact: true });
+  await expect(portfolio).toHaveCount(1);
+  await expect(portfolio).toBeHidden();
+});
+
+test("reduced motion hides the server overlay before hydration", async ({ page }) => {
+  await page.route("**/_next/**/*.js*", (route) => route.abort());
+  await page.goto("/pt");
+  const portfolio = page.getByText("Portfolio", { exact: true });
+  await expect(portfolio).toHaveCount(1);
+  await expect(portfolio).toBeHidden();
+});
+
 test("fresh intro preserves bold brand text, finishes, and does not repeat", async ({
   page,
 }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => {
+    // Existing Three.js dependency warning is unrelated to React hydration.
+    if (
+      message.type() === "warning" &&
+      message.text() === "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead."
+    ) return;
+    if (["warning", "error"].includes(message.type())) errors.push(message.text());
+  });
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/en");
   const brand = page.getByText("Fernando Carvalho", { exact: true });
@@ -30,6 +83,7 @@ test("fresh intro preserves bold brand text, finishes, and does not repeat", asy
   await page.reload();
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.getByText("Portfolio", { exact: true })).toHaveCount(0);
+  expect(errors).toEqual([]);
 });
 
 test("denied session storage cannot trap the intro or throw", async ({

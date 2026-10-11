@@ -13,6 +13,10 @@
   transition: opacity 1s;
 }
 
+:global(html[data-intro-seen]) .overlay {
+  display: none;
+}
+
 .overlayVisible,
 .textVisible {
   opacity: 1;
@@ -98,6 +102,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .overlay {
+    display: none;
+  }
   .loadingDot {
     animation: none;
   }
